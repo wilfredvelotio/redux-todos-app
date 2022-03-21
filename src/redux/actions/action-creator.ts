@@ -4,14 +4,15 @@ import { Action } from "./index";
 import { Props } from "../../../Types/UserTypes";
 import axios from "axios";
 
-export const fetchProducts = () => {
+export const fetchProducts = (url: string) => {
   return async (dispatch: Dispatch<Action>) => {
-    const users = await axios.get<Props[]>(
-      "https://jsonplaceholder.typicode.com/users"
-    );
+    const users = await axios.get<Props[]>(url);
     dispatch({
       type: ActionTypes.FETCH_PRODUCTS,
-      payload: users.data,
+      payload: {
+        data: users.data,
+        reference,
+      },
     });
   };
 };
