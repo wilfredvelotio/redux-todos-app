@@ -1,6 +1,7 @@
-import { Props } from "../../../Types/UserTypes";
+import { Props } from "../../Components/Users/UserTypes";
 import { ActionTypes } from "../actions/action-types";
 import { Action } from "../actions/index";
+
 interface Reference {
   myref: (node?: Element | null | undefined) => void;
   myView: boolean;
@@ -10,7 +11,7 @@ interface Reference {
 export interface FetchProps {
   data: Props[];
   reference: Reference;
-  didURLChange: boolean;
+  didFirstLoad: boolean;
 }
 
 const initialState: FetchProps = {
@@ -21,12 +22,30 @@ const initialState: FetchProps = {
     pageStart: 0,
     pageLimit: 6,
   },
-  didURLChange: false,
+  didFirstLoad: false,
 };
+
 const userreducer = (state: FetchProps = initialState, action: Action) => {
   switch (action.type) {
-    case ActionTypes.FETCH_PRODUCTS:
-      return { ...state, ...action.payload };
+    case ActionTypes.FETCH_USERS:
+      return {
+        ...state,
+        data: [...state.data, ...action.payload.data],
+        reference: {
+          myref: action.payload.reference.myref,
+          myView: action.payload.reference.myView,
+          pageStart:
+            action.payload.reference.pageStart + action.payload.data.length,
+          pageLimit:
+            action.payload.reference.pageLimit + action.payload.data.length,
+        },
+        didFirstLoad: action.payload.didFirstLoad,
+      };
+    case ActionTypes.USERS_LIMIT_REACHED:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }

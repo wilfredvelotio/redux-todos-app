@@ -1,9 +1,12 @@
 import { ActionTypes } from "./action-types";
-import { Props } from "../../../Types/UserTypes";
+import { Props } from "../../Components/Users/UserTypes";
 import { FetchProps } from "../reducers/UserReducer";
-interface FetchProductsAction {
-  type: ActionTypes.FETCH_PRODUCTS;
+interface FetchUsersAction {
+  type: ActionTypes.FETCH_USERS;
   payload: FetchProps;
 }
+interface UserLimitReachedAction {
+  type: ActionTypes.USERS_LIMIT_REACHED;
+}
 
-export type Action = FetchProductsAction;
+export type Action = FetchUsersAction | UserLimitReachedAction;
