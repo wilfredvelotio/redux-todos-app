@@ -100,7 +100,7 @@ const GridContainer: React.FC<GridProps> = React.memo(
                 >
                   <div style={{ display: "flex" }}>
                     <Link
-                      to="/hello"
+                      to="/melloo"
                       style={{
                         textDecoration: "none",
                         marginLeft: "auto",
