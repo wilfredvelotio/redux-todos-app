@@ -1,13 +1,11 @@
 import * as React from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useRoutes } from "react-router-dom";
 import Loading from "./Components/Loading/Loading";
-
+import Posts from "./Components/Posts/Posts";
+import Todos from "./Components/Todos/Todos";
 const Users = React.lazy(() => import("./Components/Users/Users"));
 
-const Hello: React.FC = () => {
-  return <>helo</>;
-};
 const App: React.FC = () => {
   return (
     <>
@@ -15,7 +13,8 @@ const App: React.FC = () => {
         <React.Suspense fallback={<Loading />}>
           <Routes>
             <Route path="/" element={<Users />} />
-            <Route path="/hello" element={<Hello />} />
+            <Route path="/posts/:uid" element={<Posts />} />
+            <Route path="/todos/:uid" element={<Todos />} />
           </Routes>
         </React.Suspense>
       </BrowserRouter>

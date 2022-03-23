@@ -24,11 +24,7 @@ import { fetchUsers } from "../../redux/actions/action-creator";
 
 interface GridProps {
   inView: boolean;
-  myref:
-    | ((instance: HTMLDivElement | null) => void)
-    | React.RefObject<HTMLDivElement>
-    | null
-    | undefined;
+  myref: ((instance: HTMLDivElement | null) => void) | React.RefObject<HTMLDivElement> | null | undefined;
   users: Props[];
 }
 
@@ -44,15 +40,7 @@ const User: React.FC = () => {
 
   useEffect(() => {
     if (inView || !users.didFirstLoad) {
-      dispatch(
-        fetchUsers(
-          url,
-          ref,
-          users.reference.pageStart,
-          users.reference.pageLimit,
-          inView
-        )
-      );
+      dispatch(fetchUsers(url, ref, users.reference.pageStart, users.reference.pageLimit, inView));
     }
   }, [inView]);
 
@@ -62,7 +50,7 @@ const User: React.FC = () => {
     <div className={styles.content}>
       <CenteredAppBar />
       <GridContainer inView={inView} myref={ref} users={users.data} />
-      {/* <Loader myView={inView} /> */}
+      <Loader myView={inView} />
     </div>
   );
 };
@@ -81,91 +69,85 @@ export const CenteredAppBar: React.FC = () => {
   );
 };
 
-const GridContainer: React.FC<GridProps> = React.memo(
-  ({ inView, myref, users }) => {
-    return (
-      <div>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-        >
-          {users?.map((user, index) => {
-            return (
-              <Grid ref={myref} item xs={2} sm={4} md={4} key={index}>
-                <Box
-                  sx={{
-                    boxShadow: 3,
-                  }}
-                >
-                  <div style={{ display: "flex" }}>
-                    <Link
-                      to="/hello"
-                      style={{
-                        textDecoration: "none",
-                        marginLeft: "auto",
-                      }}
-                    >
-                      <div className={styles.div__svg__fill}>
-                        <svg
-                          viewBox="-30 -2 180 75"
-                          width="35"
-                          height="30"
-                          style={{
-                            fill: "#fefefe",
-                            boxShadow: "inset 0 0 0 2px #fefefe",
-                          }}
-                        >
-                          <rect width="120" height="10"></rect>
-                          <rect y="30" width="120" height="10"></rect>
-                          <rect y="60" width="120" height="10"></rect>
-                        </svg>
-                      </div>
-                    </Link>
-                  </div>
+const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users }) => {
+  return (
+    <div>
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+        {users?.map((user, index) => {
+          return (
+            <Grid ref={myref} item xs={2} sm={4} md={4} key={index}>
+              <Box
+                sx={{
+                  boxShadow: 3,
+                }}
+              >
+                <div style={{ display: "flex" }}>
+                  <Link
+                    to="/hello"
+                    style={{
+                      textDecoration: "none",
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <div className={styles.div__svg__fill}>
+                      <svg
+                        viewBox="-30 -2 180 75"
+                        width="35"
+                        height="30"
+                        style={{
+                          fill: "#fefefe",
+                          boxShadow: "inset 0 0 0 2px #fefefe",
+                        }}
+                      >
+                        <rect width="120" height="10"></rect>
+                        <rect y="30" width="120" height="10"></rect>
+                        <rect y="60" width="120" height="10"></rect>
+                      </svg>
+                    </div>
+                  </Link>
+                </div>
 
-                  <Link to={`${user.id}/posts`}>
-                    <div
-                      style={{
-                        minHeight: "300px",
+                <Link to={`/posts/${user.id}`}>
+                  <div
+                    style={{
+                      minHeight: "300px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ height: "230px", width: "230px" }}>
+                      <img
+                        src={`https://picsum.photos/500/300?random=${index}`}
+                        style={{
+                          borderRadius: "50%",
+                          height: "100%",
+                          width: "100%",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Item
+                      sx={{
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        minHeight: "80px",
                       }}
                     >
-                      <div style={{ height: "230px", width: "230px" }}>
-                        <img
-                          src={`https://picsum.photos/500/300?random=${index}`}
-                          style={{
-                            borderRadius: "50%",
-                            height: "100%",
-                            width: "100%",
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Item
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          minHeight: "80px",
-                        }}
-                      >
-                        <Typography variant="h6">{user.name}</Typography>
-                      </Item>
-                    </div>
-                  </Link>
-                </Box>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </div>
-    );
-  }
-);
+                      <Typography variant="h6">{user.name}</Typography>
+                    </Item>
+                  </div>
+                </Link>
+              </Box>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </div>
+  );
+});
 
 export const LoaderHeight: React.FC = () => {
   return <div style={{ minHeight: "100px" }}></div>;

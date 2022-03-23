@@ -1,8 +1,12 @@
 import { combineReducers } from "redux";
-import userreducer from "./UserReducer";
+import PostsReducer from "./PostsReducer";
+import TodosReducer from "./TodosReducer";
+import UserReducer from "./UserReducer";
 
 const reducer = combineReducers({
-  user: userreducer,
+  user: UserReducer,
+  posts: PostsReducer,
+  todos: TodosReducer,
 });
 export default reducer;
 
