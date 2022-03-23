@@ -8,10 +8,9 @@ import { MyTodosProps } from "../Todos/TodosTypes";
 interface HeaderWrapperProps{
     uid:string | undefined;
     username: string | undefined;
-    post:boolean;
 }
 
-export const HeaderWrapper: React.FC<HeaderWrapperProps> = ({ uid, username, post }) => {
+export const HeaderWrapper: React.FC<HeaderWrapperProps> = ({ uid, username }) => {
   return (
     <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -25,7 +24,7 @@ export const HeaderWrapper: React.FC<HeaderWrapperProps> = ({ uid, username, pos
           >
             <Button variant="outlined" disableElevation>
               <div>
-                User {username} {post ? "Posts" : "Todos"}
+                {`User ${username} Posts`}
               </div>
             </Button>
           </Link>
@@ -37,7 +36,7 @@ export const HeaderWrapper: React.FC<HeaderWrapperProps> = ({ uid, username, pos
             }}
           >
             <Button variant="contained" disableElevation>
-              User {username} {!post ? "Posts" : "Todos"}
+            {`User ${username} Todos`}
             </Button>
           </Link>
         </div>

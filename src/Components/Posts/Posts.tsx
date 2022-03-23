@@ -8,7 +8,7 @@ import { FetchAxios } from "../Posts/FetchGeneric";
 import { HeaderWrapper, DisplayWrapper } from "../Reusable/HeaderWrapper";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts, fetchTodos } from "../../redux/actions/action-creator";
+import { fetchPosts } from "../../redux/actions/action-creator";
 import { ReduxState } from "../../redux/reducers";
 import { FetchPosts } from "../../redux/reducers/PostsReducer";
 
@@ -30,14 +30,14 @@ const Posts: React.FC = () => {
     }
   }, [inView]);
 
-  console.log(posts);
   useEffect(() => {
     fetchUserName();
   }, []);
 
+  console.log(posts);
   return (
     <>
-      <HeaderWrapper post={false} username={state} uid={uid} />
+      <HeaderWrapper username={state} uid={uid} />
       <DisplayWrapper data={posts.data} myView={inView} myref={ref} />
     </>
   );
