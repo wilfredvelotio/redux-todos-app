@@ -12,7 +12,6 @@ export const fetchUsers = (
   pageLimit: number,
   inView: boolean
 ) => {
-  console.log("action users dispacthed");
   return async (dispatch: Dispatch<Action>) => {
     const { data } = await axios.get<Props[]>(url);
     if (data)
@@ -43,7 +42,6 @@ export const fetchPosts = (
   pageLimit: number,
   inView: boolean
 ) => {
-  console.log("action posts dispacthed", url);
   return async (dispatch: Dispatch<ActionPost>) => {
     const { data } = await axios.get<MyPostProps[]>(url);
     if (data)
@@ -75,7 +73,6 @@ export const fetchTodos = (
   pageLimit: number,
   inView: boolean
 ) => {
-  console.log("action todos dispacthed");
   return async (dispatch: Dispatch<ActionTodo>) => {
     const { data } = await axios.get<[]>(url);
     if (data)

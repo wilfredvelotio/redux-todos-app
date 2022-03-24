@@ -21,6 +21,7 @@ import styles from "./Users.module.scss";
 import { StyledEngineProvider } from "@mui/material";
 import { FetchProps } from "../../redux/reducers/UserReducer";
 import { fetchUsers } from "../../redux/actions/action-creator";
+import MyForms from "../MyForms/MyForms";
 
 interface GridProps {
   inView: boolean;
@@ -43,8 +44,6 @@ const User: React.FC = () => {
       dispatch(fetchUsers(url, ref, users.reference.pageStart, users.reference.pageLimit, inView));
     }
   }, [inView]);
-
-  console.log(users);
 
   return (
     <div className={styles.content}>
@@ -70,6 +69,14 @@ export const CenteredAppBar: React.FC = () => {
 };
 
 const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users }) => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+  const handleMenu = () => {
+    handleOpen();
+  };
   return (
     <div>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -82,29 +89,17 @@ const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users })
                 }}
               >
                 <div style={{ display: "flex" }}>
-                  <Link
-                    to="/hello"
-                    style={{
-                      textDecoration: "none",
-                      marginLeft: "auto",
-                    }}
-                  >
-                    <div className={styles.div__svg__fill}>
-                      <svg
-                        viewBox="-30 -2 180 75"
-                        width="35"
-                        height="30"
-                        style={{
-                          fill: "#fefefe",
-                          boxShadow: "inset 0 0 0 2px #fefefe",
-                        }}
-                      >
-                        <rect width="120" height="10"></rect>
-                        <rect y="30" width="120" height="10"></rect>
-                        <rect y="60" width="120" height="10"></rect>
-                      </svg>
-                    </div>
-                  </Link>
+                  <div className={styles.div__svg__fill}>
+                    <MyForms
+                      modalName="Edit User"
+                      name={user.name}
+                      userName={user.username}
+                      email={user.email}
+                      phone={user.phone}
+                      website={user.website}
+                      userIdProp={index}
+                    />
+                  </div>
                 </div>
 
                 <Link to={`/posts/${user.id}`}>
