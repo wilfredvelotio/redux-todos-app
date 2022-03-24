@@ -33,11 +33,11 @@ const Todos: React.FC = () => {
     fetchUserName();
   }, []);
 
-  console.log(todos);
   return (
     <>
-      <HeaderWrapper username={state} uid={uid} />
-      <DisplayWrapper data={todos.data} myView={inView} myref={ref} />
+      <HeaderWrapper username={state} uid={uid}>
+        <DisplayWrapper data={todos.data} myView={inView} myref={ref} />
+      </HeaderWrapper>
     </>
   );
 };

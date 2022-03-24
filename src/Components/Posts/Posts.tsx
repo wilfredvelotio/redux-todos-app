@@ -34,11 +34,11 @@ const Posts: React.FC = () => {
     fetchUserName();
   }, []);
 
-  console.log(posts);
   return (
     <>
-      <HeaderWrapper username={state} uid={uid} />
-      <DisplayWrapper data={posts.data} myView={inView} myref={ref} />
+      <HeaderWrapper username={state} uid={uid}>
+        <DisplayWrapper data={posts.data} myView={inView} myref={ref} />
+      </HeaderWrapper>
     </>
   );
 };
