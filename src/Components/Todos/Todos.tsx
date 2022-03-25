@@ -4,7 +4,7 @@ import { LoaderHeight } from "../Users/Users";
 import { Box, Button } from "@mui/material";
 import { Props } from "../Users/UserTypes";
 import { FetchAxios } from "../Posts/FetchGeneric";
-import { HeaderWrapper, DisplayWrapper } from "../Reusable/HeaderWrapper";
+import { HeaderWrapper, DisplayWrapperTodos } from "../Reusable/Wrapper";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodos } from "../../redux/actions/action-creator";
@@ -21,11 +21,11 @@ const Todos: React.FC = () => {
   const { ref, inView } = useInView({ threshold: 0.9, triggerOnce: true });
   const dispatch = useDispatch();
   const todos: FetchTodos = useSelector((state: ReduxState) => state.todos);
-  const url = `https://jsonplaceholder.typicode.com/users/${uid}/todos?_start=${todos.reference.pageStart}&_limit=${todos.reference.pageLimit}`;
+  const url = `https://jsonplaceholder.typicode.com/users/${uid}/todos?_start=${todos.pageStart}&_limit=${todos.pageLimit}`;
 
   useEffect(() => {
     if (inView || !todos.didFirstLoad) {
-      dispatch(fetchTodos(url, ref, todos.reference.pageStart, todos.reference.pageLimit, inView));
+      dispatch(fetchTodos(url, todos.pageStart, todos.pageLimit));
     }
   }, [inView]);
 
@@ -36,7 +36,7 @@ const Todos: React.FC = () => {
   return (
     <>
       <HeaderWrapper username={state} uid={uid}>
-        <DisplayWrapper data={todos.data} myView={inView} myref={ref} />
+        <DisplayWrapperTodos data={todos.data} myref={ref} />
       </HeaderWrapper>
     </>
   );

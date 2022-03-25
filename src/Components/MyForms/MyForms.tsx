@@ -7,6 +7,9 @@ import styled from "styled-components";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { ReduxState } from "../../redux/reducers";
+import { modalClose } from "../../redux/actions/action-creator";
 
 const validateSchema = yup.object({
   name: yup.string().required("First Name required"),
@@ -46,64 +49,35 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-interface ModalProps {
-  modalName?: string;
-  name: string;
-  userName: string;
-  email: string;
-  phone: string;
-  website: string;
-  userIdProp: number;
-  add?: number;
-}
-export const MyForms: React.FC<ModalProps> = ({
-  modalName,
-  name,
-  userName,
-  email,
-  phone,
-  website,
-  userIdProp,
-  add,
-}) => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
+export const MyForms: React.FC = React.memo(() => {
+  const modal = useSelector((state: ReduxState) => state.modal);
+  const dispatch = useDispatch();
+
+  const handleClose = () => {
+    dispatch(modalClose());
+  };
 
   const formik = useFormik({
     initialValues: {
-      name: name,
-      userName: userName,
-      email: email,
-      phone: phone,
-      website: website,
+      name: modal.user.name,
+      userName: modal.user.username,
+      email: modal.user.email,
+      phone: modal.user.phone,
+      website: modal.user.website,
     },
     validationSchema: validateSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values);
       handleClose();
     },
   });
+
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <svg
-          viewBox="-30 -2 180 75"
-          width="35"
-          height="30"
-          style={{
-            fill: "#fefefe",
-            boxShadow: "inset 0 0 0 2px #fefefe",
-          }}
-        >
-          <rect width="120" height="10"></rect>
-          <rect y="30" width="120" height="10"></rect>
-          <rect y="60" width="120" height="10"></rect>
-        </svg>
-      </Button>
       <Modal
         keepMounted
-        open={open}
+        open={modal.open}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
@@ -111,9 +85,9 @@ export const MyForms: React.FC<ModalProps> = ({
         <Box sx={style}>
           <FormWrapper>
             <form onSubmit={formik.handleSubmit}>
-              <Typography variant="h5" align="center">
-                {add ? "Create User" : "Edit User"}
-              </Typography>
+              <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+                <Button variant="outlined">Edit User</Button>
+              </Box>
               <TextField
                 id="name"
                 name="name"
@@ -173,7 +147,7 @@ export const MyForms: React.FC<ModalProps> = ({
       </Modal>
     </div>
   );
-};
+});
 
 export const FormWrapper = styled.div`
   form {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import logo from "./logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { ReduxState } from "../..//redux/reducers";
@@ -20,8 +20,9 @@ import { Link } from "react-router-dom";
 import styles from "./Users.module.scss";
 import { StyledEngineProvider } from "@mui/material";
 import { FetchProps } from "../../redux/reducers/UserReducer";
-import { fetchUsers } from "../../redux/actions/action-creator";
+import { fetchUsers, modalOpen } from "../../redux/actions/action-creator";
 import MyForms from "../MyForms/MyForms";
+import { SVGWrapper } from "../Reusable/SVGWrapper";
 
 interface GridProps {
   inView: boolean;
@@ -37,17 +38,18 @@ const User: React.FC = () => {
   const { ref, inView } = useInView({ threshold: 0.9, triggerOnce: true });
   const dispatch = useDispatch();
   const users: FetchProps = useSelector((state: ReduxState) => state.user);
-  const url = `https://jsonplaceholder.typicode.com/users?_start=${users.reference.pageStart}&_limit=${users.reference.pageLimit}`;
+  const url = `https://jsonplaceholder.typicode.com/users?_start=${users.pageStart}&_limit=${users.pageLimit}`;
 
   useEffect(() => {
     if (inView || !users.didFirstLoad) {
-      dispatch(fetchUsers(url, ref, users.reference.pageStart, users.reference.pageLimit, inView));
+      dispatch(fetchUsers(url, users.pageStart, users.pageLimit));
     }
   }, [inView]);
 
   return (
     <div className={styles.content}>
       <CenteredAppBar />
+      <MyForms />
       <GridContainer inView={inView} myref={ref} users={users.data} />
       <Loader myView={inView} />
     </div>
@@ -69,13 +71,11 @@ export const CenteredAppBar: React.FC = () => {
 };
 
 const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users }) => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-  const handleMenu = () => {
-    handleOpen();
+  const dispatch = useDispatch();
+
+  const handleMenu = (user: Props) => {
+    //
+    dispatch(modalOpen(user));
   };
   return (
     <div>
@@ -89,16 +89,8 @@ const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users })
                 }}
               >
                 <div style={{ display: "flex" }}>
-                  <div className={styles.div__svg__fill}>
-                    <MyForms
-                      modalName="Edit User"
-                      name={user.name}
-                      userName={user.username}
-                      email={user.email}
-                      phone={user.phone}
-                      website={user.website}
-                      userIdProp={index}
-                    />
+                  <div className={styles.div__svg__fill} onClick={() => handleMenu(user)}>
+                    <SVGWrapper />
                   </div>
                 </div>
 
