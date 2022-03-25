@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { LoaderHeight } from "../Users/Users";
-import { Box, Button } from "@mui/material";
-import { Props } from "../Users/UserTypes";
-import { FetchAxios } from "../Posts/FetchGeneric";
-import { HeaderWrapper, DisplayWrapperTodos } from "../Reusable/Wrapper";
+import { Props } from "src/Components/Users/UserTypes";
+import { FetchAxios } from "src/Components/Posts/FetchGeneric";
+import { HeaderWrapper, DisplayWrapperTodos } from "src/Components/Reusable/Wrapper";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodos } from "../../redux/actions/action-creator";
-import { ReduxState } from "../../redux/reducers";
-import { FetchTodos } from "../../redux/reducers/TodosReducer";
+import { fetchTodos } from "src/redux/actions/action-creator";
+import { ReduxState } from "src/redux/reducers";
+import { FetchTodos } from "src/redux/reducers/TodosReducer";
+import { Loader } from "src/Components/Users/Users";
+import { useFetchUserName } from "src/Components/Reusable/useFetchUserName";
 
 const Todos: React.FC = () => {
   const { uid } = useParams();
-  const [state, setState] = useState<string>("Username");
-  const fetchUserName = async () => {
-    const { username } = await FetchAxios<Props>(`https://jsonplaceholder.typicode.com/users/${uid}`);
-    setState((state) => username);
-  };
+  const username = useFetchUserName(uid);
   const { ref, inView } = useInView({ threshold: 0.9, triggerOnce: true });
   const dispatch = useDispatch();
   const todos: FetchTodos = useSelector((state: ReduxState) => state.todos);
@@ -27,17 +23,14 @@ const Todos: React.FC = () => {
     if (inView || !todos.didFirstLoad) {
       dispatch(fetchTodos(url, todos.pageStart, todos.pageLimit));
     }
-  }, [inView]);
-
-  useEffect(() => {
-    fetchUserName();
-  }, []);
+  }, [inView, dispatch, url, todos.pageStart, todos.pageLimit, todos.didFirstLoad]);
 
   return (
     <>
-      <HeaderWrapper username={state} uid={uid}>
+      <HeaderWrapper username={username} uid={uid}>
         <DisplayWrapperTodos data={todos.data} myref={ref} />
       </HeaderWrapper>
+      <Loader myView={inView} />
     </>
   );
 };

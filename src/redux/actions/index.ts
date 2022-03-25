@@ -1,8 +1,9 @@
 import { ActionTypes } from "./action-types";
-import { Props } from "../../Components/Users/UserTypes";
-import { FetchProps } from "../reducers/UserReducer";
-import { FetchPosts } from "../reducers/PostsReducer";
-import { ModalInterfaceProps } from "../reducers/ModalReducer";
+import { Props } from "src/Components/Users/UserTypes";
+import { FetchProps } from "src/redux/reducers/UserReducer";
+import { FetchPosts } from "src/redux/reducers/PostsReducer";
+import { ModalInterfaceProps } from "src/redux/reducers/ModalReducer";
+import { InitialValuesFormikUser } from "src/Components/MyForms/MyForms";
 
 interface FetchUsersAction {
   type: ActionTypes.FETCH_USERS;
@@ -27,7 +28,12 @@ interface ModalAction {
   payload: ModalInterfaceProps;
 }
 
-export type Action = FetchUsersAction | LimitReachedAction;
+interface UpdateUsersAction {
+  type: ActionTypes.UPDATE_USERS;
+  payload: InitialValuesFormikUser;
+}
+
+export type Action = FetchUsersAction | LimitReachedAction | UpdateUsersAction;
 export type ActionPost = FetchPostsAction | LimitReachedAction;
 export type ActionTodo = FetchTodosAction | LimitReachedAction;
 export type ActionModal = ModalAction;

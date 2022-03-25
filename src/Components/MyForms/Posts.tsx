@@ -8,8 +8,9 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { ReduxState } from "../../redux/reducers";
-import { modalClose } from "../../redux/actions/action-creator";
+import { ReduxState } from "src/redux/reducers";
+import { modalClose } from "src/redux/actions/action-creator";
+import { YupValidations } from "src/Components/Reusable/RegexFormik";
 
 const validateSchema = yup.object({
   title: yup.string().required("First Name required"),
@@ -18,7 +19,7 @@ const validateSchema = yup.object({
     .required("User Name required")
     .min(6, "Must be at least 6 characters")
     .max(20, "Must be less than 18 characters")
-    .matches(/^[aA-zZ\s]+$/, "No Special Characters"),
+    .matches(new RegExp(YupValidations.VALIDATE_ONLY_ALPHABETS), "No Special Characters"),
 });
 
 const style = {
@@ -41,7 +42,7 @@ export const MyForms: React.FC = React.memo(() => {
   const handleClose = () => {
     dispatch(modalClose());
   };
-
+  const handleSubmit = () => {};
   const formik = useFormik({
     initialValues: {
       title: modal.posts.title,
@@ -50,6 +51,7 @@ export const MyForms: React.FC = React.memo(() => {
     validationSchema: validateSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
+      handleSubmit();
       handleClose();
     },
   });

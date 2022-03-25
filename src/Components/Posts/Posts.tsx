@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { LoaderHeight } from "../Users/Users";
 import { Box, Button } from "@mui/material";
-import { Props } from "../Users/UserTypes";
-import { MyPostProps } from "./PostsTypes";
-import { FetchAxios } from "../Posts/FetchGeneric";
+import { Props } from "src/Components/Users/UserTypes";
+import { MyPostProps } from "src/Components/Posts/PostsTypes";
+import { FetchAxios } from "src/Components/Posts/FetchGeneric";
 import { HeaderWrapper, DisplayWrapper } from "../Reusable/Wrapper";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from "../../redux/actions/action-creator";
-import { ReduxState } from "../../redux/reducers";
-import { FetchPosts } from "../../redux/reducers/PostsReducer";
-import Loading from "../Loading/Loading";
-import PostsForm from "../MyForms/Posts";
+import { fetchPosts } from "src/redux/actions/action-creator";
+import { ReduxState } from "src/redux/reducers";
+import { FetchPosts } from "src/redux/reducers/PostsReducer";
+import PostsForm from "src/Components/MyForms/Posts";
+import { Loader } from "src/Components/Users/Users";
+import { useFetchUserName } from "src/Components/Reusable/useFetchUserName";
 
 const Posts: React.FC = () => {
   const { uid } = useParams();
-  const [state, setState] = useState<string>("Username");
-  const fetchUserName = async () => {
-    const { username } = await FetchAxios<Props>(`https://jsonplaceholder.typicode.com/users/${uid}`);
-    setState((state) => username);
-  };
+  const username = useFetchUserName(uid);
   const { ref, inView } = useInView({ threshold: 0.9, triggerOnce: true });
   const dispatch = useDispatch();
   const posts: FetchPosts = useSelector((state: ReduxState) => state.posts);
@@ -30,19 +26,15 @@ const Posts: React.FC = () => {
     if (inView || !posts.didFirstLoad) {
       dispatch(fetchPosts(url, posts.pageStart, posts.pageLimit));
     }
-  }, [inView]);
-
-  useEffect(() => {
-    fetchUserName();
-  }, []);
+  }, [dispatch, inView, url, posts.pageStart, posts.pageLimit, posts.didFirstLoad]);
 
   return (
     <>
       <PostsForm />
-      <HeaderWrapper username={state} uid={uid}>
+      <HeaderWrapper username={username} uid={uid}>
         <DisplayWrapper data={posts.data} myref={ref} />
       </HeaderWrapper>
-      {!inView ? <Loading /> : <LoaderHeight />}
+      <Loader myView={inView} />
     </>
   );
 };

@@ -1,7 +1,8 @@
-import { ActionTypes } from "../actions/action-types";
-import { Action, ActionModal, ActionPost } from "../actions/index";
+import { ActionTypes } from "src/redux/actions/action-types";
+import { Action, ActionModal, ActionPost } from "src/redux/actions/index";
 
 interface UserModal {
+  id: number;
   name: string;
   username: string;
   email: string;
@@ -21,6 +22,7 @@ export interface ModalInterfaceProps {
 const initialState: ModalInterfaceProps = {
   open: false,
   user: {
+    id: 0,
     name: "",
     email: "",
     phone: "",

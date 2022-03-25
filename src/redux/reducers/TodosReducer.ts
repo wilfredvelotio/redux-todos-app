@@ -1,6 +1,6 @@
-import { MyTodosProps } from "../../Components/Todos/TodosTypes";
-import { ActionTypes } from "../actions/action-types";
-import { Action, ActionPost, ActionTodo } from "../actions/index";
+import { MyTodosProps } from "src/Components/Todos/TodosTypes";
+import { ActionTypes } from "src/redux/actions/action-types";
+import { Action, ActionPost, ActionTodo } from "src/redux/actions/index";
 
 export interface FetchTodos {
   data: MyTodosProps[];

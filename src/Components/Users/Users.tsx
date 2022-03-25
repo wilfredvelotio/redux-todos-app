@@ -15,24 +15,19 @@ import Grid from "@mui/material/Grid";
 import Item from "@mui/material/ListItem";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Loading from "../Loading/Loading";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
-import styles from "./Users.module.scss";
-import { StyledEngineProvider } from "@mui/material";
-import { FetchProps } from "../../redux/reducers/UserReducer";
-import { fetchUsers, modalOpen } from "../../redux/actions/action-creator";
-import MyForms from "../MyForms/MyForms";
-import { SVGWrapper } from "../Reusable/SVGWrapper";
+import { Container, List, StyledEngineProvider } from "@mui/material";
+import { FetchProps } from "src/redux/reducers/UserReducer";
+import { fetchUsers, modalOpen } from "src/redux/actions/action-creator";
+import MyForms from "src/Components/MyForms/MyForms";
+import { SVGWrapper } from "src/Components/Reusable/SVGWrapper";
 
 interface GridProps {
   inView: boolean;
   myref: ((instance: HTMLDivElement | null) => void) | React.RefObject<HTMLDivElement> | null | undefined;
   users: Props[];
 }
-
-const Loader: React.FC<{ myView: boolean }> = React.memo(({ myView }) => {
-  return <>{!myView ? <Loading /> : <LoaderHeight />}</>;
-});
 
 const User: React.FC = () => {
   const { ref, inView } = useInView({ threshold: 0.9, triggerOnce: true });
@@ -44,10 +39,10 @@ const User: React.FC = () => {
     if (inView || !users.didFirstLoad) {
       dispatch(fetchUsers(url, users.pageStart, users.pageLimit));
     }
-  }, [inView]);
+  }, [inView, dispatch, url, users.pageStart, users.pageLimit, users.didFirstLoad]);
 
   return (
-    <div className={styles.content}>
+    <div>
       <CenteredAppBar />
       <MyForms />
       <GridContainer inView={inView} myref={ref} users={users.data} />
@@ -58,15 +53,19 @@ const User: React.FC = () => {
 
 export const CenteredAppBar: React.FC = () => {
   return (
-    <StyledEngineProvider injectFirst>
-      <div className={styles.appbar__custom__div}>
-        <AppBar className={styles.appbar__custom__header}>
-          <div className={styles.divflex__justify__center}>
-            <div>Todos And Posts App</div>
-          </div>
-        </AppBar>
-      </div>
-    </StyledEngineProvider>
+    <Box sx={{ display: "flex", maxWidth: "1080px", height: "80px" }}>
+      <AppBar
+        sx={{
+          backgroundColor: "#7c3aed",
+          fontSize: "40px",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <div>Todos And Posts App</div>
+        </Box>
+      </AppBar>
+    </Box>
   );
 };
 
@@ -74,11 +73,11 @@ const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users })
   const dispatch = useDispatch();
 
   const handleMenu = (user: Props) => {
-    //
     dispatch(modalOpen(user));
   };
+
   return (
-    <div>
+    <Container sx={{ display: "flex", pt: 6, m: 0, mx: "auto", maxWidth: "md" }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {users?.map((user, index) => {
           return (
@@ -88,11 +87,22 @@ const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users })
                   boxShadow: 3,
                 }}
               >
-                <div style={{ display: "flex" }}>
-                  <div className={styles.div__svg__fill} onClick={() => handleMenu(user)}>
+                <Box
+                  sx={{
+                    backgroundColor: "#8b5cf6 ",
+                    height: " 45px",
+                    width: " 47px",
+                    display: " flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: "auto",
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <div onClick={() => handleMenu(user)}>
                     <SVGWrapper />
                   </div>
-                </div>
+                </Box>
 
                 <Link to={`/posts/${user.id}`}>
                   <div
@@ -132,12 +142,11 @@ const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users })
           );
         })}
       </Grid>
-    </div>
+    </Container>
   );
 });
 
-export const LoaderHeight: React.FC = () => {
-  return <div style={{ minHeight: "100px" }}></div>;
-};
-
+export const Loader: React.FC<{ myView: boolean }> = React.memo(({ myView }) => {
+  return <>{!myView ? <CircularProgress sx={{ display: "flex", mx: "auto" }} /> : <Box sx={{ minWidth: 10 }} />}</>;
+});
 export default User;

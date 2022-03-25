@@ -1,6 +1,6 @@
-import { Props } from "../../Components/Users/UserTypes";
-import { ActionTypes } from "../actions/action-types";
-import { Action } from "../actions/index";
+import { Props } from "src/Components/Users/UserTypes";
+import { ActionTypes } from "src/redux/actions/action-types";
+import { Action } from "src/redux/actions/index";
 
 export interface FetchProps {
   data: Props[];
@@ -30,7 +30,14 @@ const UserReducer = (state: FetchProps = initialState, action: Action) => {
       return {
         ...state,
       };
-
+    case ActionTypes.UPDATE_USERS:
+      const userData = [...state.data];
+      let userToUpdate = userData.findIndex((val) => val.id === action.payload.id);
+      userData[userToUpdate] = { ...userData[userToUpdate], ...action.payload };
+      return {
+        ...state,
+        data: userData,
+      };
     default:
       return state;
   }

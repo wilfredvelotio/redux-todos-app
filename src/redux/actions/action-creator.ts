@@ -1,9 +1,10 @@
-import { ActionTypes } from "../actions/action-types";
+import { ActionTypes } from "src/redux/actions/action-types";
 import { Dispatch } from "redux";
 import { Action, ActionModal, ActionPost, ActionTodo } from "./index";
-import { Props } from "../../Components/Users/UserTypes";
+import { Props } from "src/Components/Users/UserTypes";
 import axios from "axios";
-import { MyPostProps } from "../../Components/Posts/PostsTypes";
+import { MyPostProps } from "src/Components/Posts/PostsTypes";
+import { InitialValuesFormikUser } from "src/Components/MyForms/MyForms";
 
 export const fetchUsers = (url: string, pageStart: number, pageLimit: number) => {
   return async (dispatch: Dispatch<Action>) => {
@@ -21,6 +22,23 @@ export const fetchUsers = (url: string, pageStart: number, pageLimit: number) =>
     else
       dispatch({
         type: ActionTypes.USERS_LIMIT_REACHED,
+      });
+  };
+};
+
+export const updateUsers = (data: InitialValuesFormikUser) => {
+  return async (dispatch: Dispatch<Action>) => {
+    if (data)
+      dispatch({
+        type: ActionTypes.UPDATE_USERS,
+        payload: {
+          id: data.id,
+          email: data.email,
+          name: data.name,
+          phone: data.phone,
+          userName: data.userName,
+          website: data.website,
+        },
       });
   };
 };
@@ -73,6 +91,7 @@ export const modalOpen = (user: Props) => {
       payload: {
         open: true,
         user: {
+          id: user.id,
           name: user.name,
           email: user.email,
           phone: user.phone,
@@ -95,11 +114,12 @@ export const modalOpenPost = (post: MyPostProps) => {
       payload: {
         open: true,
         user: {
-          name: "user.name",
-          email: "user.email",
-          phone: "user.phone",
-          username: "user.username",
-          website: "user.website",
+          id: 0,
+          name: "",
+          email: "",
+          phone: "",
+          username: "",
+          website: "",
         },
         posts: {
           title: post.title,
@@ -117,6 +137,7 @@ export const modalClose = () => {
       payload: {
         open: false,
         user: {
+          id: 0,
           name: "",
           email: "",
           phone: "",

@@ -1,16 +1,17 @@
 import * as React from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route, Link, useRoutes } from "react-router-dom";
-import Loading from "./Components/Loading/Loading";
-import Posts from "./Components/Posts/Posts";
-import Todos from "./Components/Todos/Todos";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+
 const Users = React.lazy(() => import("./Components/Users/Users"));
+const Posts = React.lazy(() => import("./Components/Posts/Posts"));
+const Todos = React.lazy(() => import("./Components/Todos/Todos"));
 
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
-        <React.Suspense fallback={<Loading />}>
+        <React.Suspense fallback={<CircularProgress />}>
           <Routes>
             <Route path="/" element={<Users />} />
             <Route path="/posts/:uid" element={<Posts />} />

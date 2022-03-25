@@ -8,8 +8,9 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { ReduxState } from "../../redux/reducers";
-import { modalClose } from "../../redux/actions/action-creator";
+import { ReduxState } from "src/redux/reducers";
+import { modalClose, updateUsers } from "src/redux/actions/action-creator";
+import { YupValidations } from "../Reusable/RegexFormik";
 
 const validateSchema = yup.object({
   name: yup.string().required("First Name required"),
@@ -18,22 +19,16 @@ const validateSchema = yup.object({
     .required("User Name required")
     .min(6, "Must be at least 6 characters")
     .max(20, "Must be less than 18 characters")
-    .matches(/^[aA-zZ\s]+$/, "No Special Characters"),
+    .matches(new RegExp(YupValidations.VALIDATE_ONLY_ALPHABETS), "No Special Characters"),
   email: yup.string().email("Enter Valid Email").required("Email required"),
   phone: yup
     .string()
     .required("This field is Required")
-    .matches(
-      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-      "Phone number is not valid"
-    )
+    .matches(new RegExp(YupValidations.VALIDATE_PHONE), "Phone number is not valid")
     .required("Phone required"),
   website: yup
     .string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      "Enter correct url!"
-    )
+    .matches(new RegExp(YupValidations.VALIDATE_WEBSITE), "Enter correct url!")
     .required("Please enter website"),
 });
 
@@ -50,25 +45,40 @@ const style = {
   p: 4,
 };
 
+export interface InitialValuesFormikUser {
+  id: number;
+  name: string;
+  userName: string;
+  email: string;
+  phone: string;
+  website: string;
+}
+
 export const MyForms: React.FC = React.memo(() => {
   const modal = useSelector((state: ReduxState) => state.modal);
+
+  const initialValues: InitialValuesFormikUser = {
+    id: modal.user.id,
+    name: modal.user.name,
+    userName: modal.user.username,
+    email: modal.user.email,
+    phone: modal.user.phone,
+    website: modal.user.website,
+  };
   const dispatch = useDispatch();
 
   const handleClose = () => {
     dispatch(modalClose());
   };
-
+  const handleSubmit = (values: InitialValuesFormikUser) => {
+    dispatch(updateUsers(values));
+  };
   const formik = useFormik({
-    initialValues: {
-      name: modal.user.name,
-      userName: modal.user.username,
-      email: modal.user.email,
-      phone: modal.user.phone,
-      website: modal.user.website,
-    },
+    initialValues: initialValues,
     validationSchema: validateSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
+      handleSubmit(values);
       handleClose();
     },
   });

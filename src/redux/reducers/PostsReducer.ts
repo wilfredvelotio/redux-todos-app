@@ -1,6 +1,6 @@
-import { MyPostProps } from "../../Components/Posts/PostsTypes";
-import { ActionTypes } from "../actions/action-types";
-import { Action, ActionPost } from "../actions/index";
+import { MyPostProps } from "src/Components/Posts/PostsTypes";
+import { ActionTypes } from "src/redux/actions/action-types";
+import { Action, ActionPost } from "src/redux/actions/index";
 
 export interface FetchPosts {
   data: MyPostProps[];

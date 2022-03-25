@@ -1,11 +1,10 @@
 import { Button, List } from "@mui/material";
 import React, { Children } from "react";
 import { Link } from "react-router-dom";
-import { MyPostProps } from "../Posts/PostsTypes";
-import { MyTodosProps } from "../Todos/TodosTypes";
-import { useDispatch, useSelector } from "react-redux";
-import { ReduxState } from "../..//redux/reducers";
-import { modalOpenPost } from "../../redux/actions/action-creator";
+import { MyPostProps } from "src/Components/Posts/PostsTypes";
+import { MyTodosProps } from "src/Components/Todos/TodosTypes";
+import { useDispatch } from "react-redux";
+import { modalOpenPost } from "src/redux/actions/action-creator";
 
 interface HeaderWrapperProps {
   uid: string | undefined;
