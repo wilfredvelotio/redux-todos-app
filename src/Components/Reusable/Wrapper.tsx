@@ -1,15 +1,15 @@
-import { Button, List } from "@mui/material";
+import { AppBar, Box, Button, CircularProgress, Container, Grid, List, Typography } from "@mui/material";
 import React, { Children } from "react";
 import { Link } from "react-router-dom";
-import { MyPostProps } from "src/Components/Posts/PostsTypes";
-import { MyTodosProps } from "src/Components/Todos/TodosTypes";
 import { useDispatch } from "react-redux";
-import { modalOpenPost } from "src/redux/actions/action-creator";
+import { modalOpenPost, modalOpenTodo } from "src/redux/actions/action-creator";
+import Item from "@mui/material/ListItem";
+import { SVGWrapper } from "src/Components/Reusable/SVGWrapper";
+import { modalOpen } from "src/redux/actions/action-creator";
 
 interface HeaderWrapperProps {
-  uid: string | undefined;
-  username: string | undefined;
-  children?: React.ReactNode;
+  uid: string;
+  username: string;
 }
 
 export const HeaderWrapper: React.FC<HeaderWrapperProps> = ({ uid, username, children }) => {
@@ -47,69 +47,194 @@ export const HeaderWrapper: React.FC<HeaderWrapperProps> = ({ uid, username, chi
 };
 
 interface DisplayWrapperProps {
-  data: MyPostProps[];
+  data: MyPostProps[] | MyTodosProps[];
   myref: (node?: Element | null | undefined) => void;
 }
 
 export const DisplayWrapper: React.FC<DisplayWrapperProps> = ({ data, myref }) => {
-  //
   const dispatch = useDispatch();
-  const handleMenu = (post: MyPostProps) => {
-    dispatch(modalOpenPost(post));
+  const handleMenu = (post: MyPostProps | MyTodosProps) => {
+    if ("completed" in post) {
+      dispatch(modalOpenTodo(post));
+    } else {
+      dispatch(modalOpenPost(post));
+    }
+  };
+
+  return (
+    <>
+      <div>
+        {data?.map((post, index) => {
+          return (
+            <div
+              ref={myref}
+              key={index}
+              style={{
+                fontFamily: `'Montserrat','sans-serif'`,
+                minHeight: "200px",
+              }}
+            >
+              <WhichDisplayWrapper post={post} handleMenu={handleMenu} />
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
+
+interface WhichDisplayWrapperProps {
+  post: MyPostProps | MyTodosProps;
+  handleMenu: (post: MyTodosProps | MyPostProps) => void;
+}
+export const WhichDisplayWrapper: React.FC<WhichDisplayWrapperProps> = ({ post, handleMenu }) => {
+  if ("completed" in post) return <TodosDisplayData post={post} handleMenu={handleMenu} />;
+  else
+    return (
+      <>
+        <PostDisplayData post={post} handleMenu={handleMenu} />
+      </>
+    );
+};
+
+type PostsDisplayDataProps = {
+  post: MyPostProps;
+  handleMenu: (post: MyPostProps) => void;
+};
+export const PostDisplayData: React.FC<PostsDisplayDataProps> = ({ post, handleMenu }) => {
+  const handleMenuEnable = () => {
+    handleMenu(post);
   };
   return (
     <>
-      <div>
-        {data?.map((post, index) => {
-          return (
-            <div
-              ref={myref}
-              key={index}
-              style={{
-                fontFamily: `'Montserrat','sans-serif'`,
-                minHeight: "200px",
-              }}
-            >
-              <List>Title: {post.title}</List>
-              <List>Body: {post.body}</List>
-              <Button variant="outlined" onClick={() => handleMenu(post)}>
-                Edit Post
-              </Button>
-            </div>
-          );
-        })}
-      </div>
+      <List>Title: {post.title}</List>
+      <List>Body: {post.body}</List>
+      <Button variant="outlined" onClick={handleMenuEnable}>
+        Edit Post
+      </Button>
     </>
   );
 };
-
-interface DisplayWrapperPostProps {
-  data: MyTodosProps[];
-  myref: (node?: Element | null | undefined) => void;
-}
-
-export const DisplayWrapperTodos: React.FC<DisplayWrapperPostProps> = ({ data, myref }) => {
-  //
-
+type TodosDisplayDataProps = {
+  post: MyTodosProps;
+  handleMenu: (post: MyTodosProps) => void;
+};
+export const TodosDisplayData: React.FC<TodosDisplayDataProps> = ({ post, handleMenu }) => {
+  const handleMenuEnable = () => {
+    handleMenu(post);
+  };
   return (
     <>
-      <div>
-        {data?.map((post, index) => {
-          return (
-            <div
-              ref={myref}
-              key={index}
-              style={{
-                fontFamily: `'Montserrat','sans-serif'`,
-                minHeight: "200px",
-              }}
-            >
-              <List>Title: {post.title}</List>
-              <List>Completed: {`${post.completed} `}</List>
-            </div>
-          );
-        })}
-      </div>
+      <List>Title: {post.title}</List>
+      <List>Completed: {`${post.completed} `}</List>
+      <Button variant="outlined" onClick={handleMenuEnable}>
+        Edit Todos
+      </Button>
     </>
   );
 };
+
+interface GridProps {
+  inView: boolean;
+  myref: ((instance: HTMLDivElement | null) => void) | React.RefObject<HTMLDivElement> | null | undefined;
+  users: Props[];
+}
+
+export const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users }) => {
+  const dispatch = useDispatch();
+
+  const handleMenu = (user: Props) => {
+    dispatch(modalOpen(user));
+  };
+
+  return (
+    <Container sx={{ display: "flex", pt: 6, m: 0, mx: "auto", maxWidth: "md" }}>
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+        {users?.map((user, index) => {
+          return (
+            <Grid ref={myref} item xs={2} sm={4} md={4} key={index}>
+              <Box
+                sx={{
+                  boxShadow: 3,
+                }}
+              >
+                <Box
+                  sx={{
+                    backgroundColor: "#8b5cf6 ",
+                    height: " 45px",
+                    width: " 47px",
+                    display: " flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: "auto",
+                    cursor: "pointer",
+                  }}
+                  style={{ display: "flex" }}
+                  onClick={() => handleMenu(user)}
+                >
+                  <SVGWrapper />
+                </Box>
+
+                <Link to={`/posts/${user.id}`}>
+                  <div
+                    style={{
+                      minHeight: "300px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ height: "230px", width: "230px" }}>
+                      <img
+                        src={`https://picsum.photos/500/300?random=${index}`}
+                        style={{
+                          borderRadius: "50%",
+                          height: "100%",
+                          width: "100%",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Item
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "80px",
+                      }}
+                    >
+                      <Typography variant="h6">{user.name}</Typography>
+                    </Item>
+                  </div>
+                </Link>
+              </Box>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Container>
+  );
+});
+
+export const CenteredAppBar: React.FC<{ name: string }> = ({ name }) => {
+  return (
+    <Box sx={{ display: "flex", maxWidth: "1080px", height: "80px" }}>
+      <AppBar
+        sx={{
+          backgroundColor: "#7c3aed",
+          fontSize: "40px",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <div>{name}</div>
+        </Box>
+      </AppBar>
+    </Box>
+  );
+};
+
+export const Loader: React.FC<{ myView: boolean }> = React.memo(({ myView }) => {
+  return <>{!myView ? <CircularProgress sx={{ display: "flex", mx: "auto" }} /> : <Box sx={{ minWidth: 10 }} />}</>;
+});

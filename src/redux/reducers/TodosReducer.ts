@@ -1,4 +1,3 @@
-import { MyTodosProps } from "src/Components/Todos/TodosTypes";
 import { ActionTypes } from "src/redux/actions/action-types";
 import { Action, ActionPost, ActionTodo } from "src/redux/actions/index";
 
@@ -26,7 +25,15 @@ const TodosReducer = (state: FetchTodos = initialState, action: ActionTodo) => {
         pageLimit: action.payload.pageLimit + action.payload.data.length,
         didFirstLoad: action.payload.didFirstLoad,
       };
-    case ActionTypes.TODOS_LIMIT_REACHED:
+    case ActionTypes.UPDATE_TODOS:
+      const todosData = [...state.data];
+      let todosToUpdate = todosData.findIndex((val) => val.id === action.payload.id);
+      todosData[todosToUpdate] = { ...todosData[todosToUpdate], ...action.payload };
+      return {
+        ...state,
+        data: todosData,
+      };
+    case ActionTypes.LIMIT_REACHED:
       return {
         ...state,
       };

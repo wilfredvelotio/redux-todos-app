@@ -1,14 +1,16 @@
 import { ActionTypes } from "src/redux/actions/action-types";
 import { Dispatch } from "redux";
 import { Action, ActionModal, ActionPost, ActionTodo } from "./index";
-import { Props } from "src/Components/Users/UserTypes";
 import axios from "axios";
-import { MyPostProps } from "src/Components/Posts/PostsTypes";
 import { InitialValuesFormikUser } from "src/Components/MyForms/MyForms";
+import { getAxios } from "src/Components/Reusable/AxiosAllMethods";
+import { resetPost, resetTodo, resetUser } from "./reset";
+import { InitialValuesFormikPost } from "src/Components/MyForms/Posts";
+import { InitialValuesFormikTodos } from "src/Components/MyForms/Todos";
 
 export const fetchUsers = (url: string, pageStart: number, pageLimit: number) => {
   return async (dispatch: Dispatch<Action>) => {
-    const { data } = await axios.get<Props[]>(url);
+    const data = await getAxios<Props[]>(url);
     if (data)
       dispatch({
         type: ActionTypes.FETCH_USERS,
@@ -21,31 +23,23 @@ export const fetchUsers = (url: string, pageStart: number, pageLimit: number) =>
       });
     else
       dispatch({
-        type: ActionTypes.USERS_LIMIT_REACHED,
+        type: ActionTypes.LIMIT_REACHED,
       });
   };
 };
 
 export const updateUsers = (data: InitialValuesFormikUser) => {
   return async (dispatch: Dispatch<Action>) => {
-    if (data)
-      dispatch({
-        type: ActionTypes.UPDATE_USERS,
-        payload: {
-          id: data.id,
-          email: data.email,
-          name: data.name,
-          phone: data.phone,
-          userName: data.userName,
-          website: data.website,
-        },
-      });
+    dispatch({
+      type: ActionTypes.UPDATE_USERS,
+      payload: data,
+    });
   };
 };
 
 export const fetchPosts = (url: string, pageStart: number, pageLimit: number) => {
   return async (dispatch: Dispatch<ActionPost>) => {
-    const { data } = await axios.get<MyPostProps[]>(url);
+    const data = await getAxios<MyPostProps[]>(url);
     if (data)
       dispatch({
         type: ActionTypes.FETCH_POSTS,
@@ -58,15 +52,24 @@ export const fetchPosts = (url: string, pageStart: number, pageLimit: number) =>
       });
     else {
       dispatch({
-        type: ActionTypes.POSTS_LIMIT_REACHED,
+        type: ActionTypes.LIMIT_REACHED,
       });
     }
   };
 };
 
+export const updatePosts = (data: InitialValuesFormikPost) => {
+  return async (dispatch: Dispatch<ActionPost>) => {
+    dispatch({
+      type: ActionTypes.UPDATE_POSTS,
+      payload: data,
+    });
+  };
+};
+
 export const fetchTodos = (url: string, pageStart: number, pageLimit: number) => {
   return async (dispatch: Dispatch<ActionTodo>) => {
-    const { data } = await axios.get<[]>(url);
+    const data = await getAxios<MyTodosProps[]>(url);
     if (data)
       dispatch({
         type: ActionTypes.FETCH_TODOS,
@@ -79,8 +82,17 @@ export const fetchTodos = (url: string, pageStart: number, pageLimit: number) =>
       });
     else
       dispatch({
-        type: ActionTypes.USERS_LIMIT_REACHED,
+        type: ActionTypes.LIMIT_REACHED,
       });
+  };
+};
+
+export const updateTodos = (data: InitialValuesFormikTodos) => {
+  return async (dispatch: Dispatch<ActionTodo>) => {
+    dispatch({
+      type: ActionTypes.UPDATE_TODOS,
+      payload: data,
+    });
   };
 };
 
@@ -90,18 +102,9 @@ export const modalOpen = (user: Props) => {
       type: ActionTypes.MODAL_OPEN,
       payload: {
         open: true,
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          username: user.username,
-          website: user.website,
-        },
-        posts: {
-          title: "",
-          body: "",
-        },
+        user: user,
+        posts: resetPost,
+        todos: resetTodo,
       },
     });
   };
@@ -113,18 +116,23 @@ export const modalOpenPost = (post: MyPostProps) => {
       type: ActionTypes.MODAL_OPEN,
       payload: {
         open: true,
-        user: {
-          id: 0,
-          name: "",
-          email: "",
-          phone: "",
-          username: "",
-          website: "",
-        },
-        posts: {
-          title: post.title,
-          body: post.body,
-        },
+        user: resetUser,
+        posts: post,
+        todos: resetTodo,
+      },
+    });
+  };
+};
+
+export const modalOpenTodo = (post: MyTodosProps) => {
+  return (dispatch: Dispatch<ActionModal>) => {
+    dispatch({
+      type: ActionTypes.MODAL_OPEN,
+      payload: {
+        open: true,
+        user: resetUser,
+        posts: resetPost,
+        todos: post,
       },
     });
   };
@@ -136,18 +144,6 @@ export const modalClose = () => {
       type: ActionTypes.MODAL_CLOSE,
       payload: {
         open: false,
-        user: {
-          id: 0,
-          name: "",
-          email: "",
-          phone: "",
-          username: "",
-          website: "",
-        },
-        posts: {
-          title: "",
-          body: "",
-        },
       },
     });
   };

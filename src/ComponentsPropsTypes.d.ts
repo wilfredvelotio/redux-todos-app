@@ -15,7 +15,7 @@ interface UserCompany {
   catchPhrase: string;
   bs: string;
 }
-export interface Props {
+declare interface Props {
   id: number;
   name: string;
   username: string;
@@ -24,4 +24,18 @@ export interface Props {
   phone: string;
   website: string;
   company: UserCompany;
+}
+
+declare interface MyPostProps {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+}
+
+declare interface MyTodosProps {
+  userId: number;
+  id: string;
+  title: string;
+  completed: boolean;
 }

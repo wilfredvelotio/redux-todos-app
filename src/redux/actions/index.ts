@@ -1,39 +1,55 @@
 import { ActionTypes } from "./action-types";
-import { Props } from "src/Components/Users/UserTypes";
 import { FetchProps } from "src/redux/reducers/UserReducer";
 import { FetchPosts } from "src/redux/reducers/PostsReducer";
 import { ModalInterfaceProps } from "src/redux/reducers/ModalReducer";
 import { InitialValuesFormikUser } from "src/Components/MyForms/MyForms";
+import { FetchTodos } from "src/redux/reducers/TodosReducer";
+import { InitialValuesFormikPost } from "src/Components/MyForms/Posts";
+import { InitialValuesFormikTodos } from "src/Components/MyForms/Todos";
 
-interface FetchUsersAction {
+export interface FetchUsersAction {
   type: ActionTypes.FETCH_USERS;
   payload: FetchProps;
 }
-interface LimitReachedAction {
-  type: ActionTypes.USERS_LIMIT_REACHED | ActionTypes.POSTS_LIMIT_REACHED | ActionTypes.TODOS_LIMIT_REACHED;
+export interface LimitReachedAction {
+  type: ActionTypes.LIMIT_REACHED;
 }
 
-interface FetchPostsAction {
+export interface FetchPostsAction {
   type: ActionTypes.FETCH_POSTS;
   payload: FetchPosts;
 }
 
-interface FetchTodosAction {
+export interface FetchTodosAction {
   type: ActionTypes.FETCH_TODOS;
-  payload: FetchPosts;
+  payload: FetchTodos;
 }
 
-interface ModalAction {
-  type: ActionTypes.MODAL_CLOSE | ActionTypes.MODAL_OPEN;
+export interface ModalAction {
+  type: ActionTypes.MODAL_OPEN;
   payload: ModalInterfaceProps;
 }
-
-interface UpdateUsersAction {
+export interface ModalActionClose {
+  type: ActionTypes.MODAL_CLOSE;
+  payload: {
+    open: boolean;
+  };
+}
+export interface UpdateUsersAction {
   type: ActionTypes.UPDATE_USERS;
   payload: InitialValuesFormikUser;
 }
+export interface UpdatePostsAction {
+  type: ActionTypes.UPDATE_POSTS;
+  payload: InitialValuesFormikPost;
+}
+
+export interface UpdateTodosAction {
+  type: ActionTypes.UPDATE_TODOS;
+  payload: InitialValuesFormikTodos;
+}
 
 export type Action = FetchUsersAction | LimitReachedAction | UpdateUsersAction;
-export type ActionPost = FetchPostsAction | LimitReachedAction;
-export type ActionTodo = FetchTodosAction | LimitReachedAction;
-export type ActionModal = ModalAction;
+export type ActionPost = FetchPostsAction | LimitReachedAction | UpdatePostsAction;
+export type ActionTodo = FetchTodosAction | LimitReachedAction | UpdateTodosAction;
+export type ActionModal = ModalAction | ModalActionClose;

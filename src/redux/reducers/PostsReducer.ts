@@ -1,4 +1,3 @@
-import { MyPostProps } from "src/Components/Posts/PostsTypes";
 import { ActionTypes } from "src/redux/actions/action-types";
 import { Action, ActionPost } from "src/redux/actions/index";
 
@@ -26,7 +25,15 @@ const PostsReducer = (state: FetchPosts = initialState, action: ActionPost) => {
         pageLimit: action.payload.pageLimit + action.payload.data.length,
         didFirstLoad: action.payload.didFirstLoad,
       };
-    case ActionTypes.POSTS_LIMIT_REACHED:
+    case ActionTypes.UPDATE_POSTS:
+      const postData = [...state.data];
+      let postToUpdate = postData.findIndex((val) => val.id === action.payload.id);
+      postData[postToUpdate] = { ...postData[postToUpdate], ...action.payload };
+      return {
+        ...state,
+        data: postData,
+      };
+    case ActionTypes.LIMIT_REACHED:
       return {
         ...state,
       };

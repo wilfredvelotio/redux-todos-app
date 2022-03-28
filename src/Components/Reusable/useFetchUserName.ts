@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { FetchAxios } from "src/Components/Posts/FetchGeneric";
-import { Props } from "src/Components/Users/UserTypes";
+import { getAxios } from "src/Components/Reusable/AxiosAllMethods";
 
-export const useFetchUserName = (uid: string | undefined) => {
+export const useFetchUserName = (uid: string) => {
   const [state, setState] = useState<string>("Username");
   const fetchUserName = useCallback(async () => {
-    const { username } = await FetchAxios<Props>(`https://jsonplaceholder.typicode.com/users/${uid}`);
+    const { username } = await getAxios<Props>(`users/${uid}`);
     setState((state) => username);
   }, [uid]);
   useEffect(() => {

@@ -1,4 +1,3 @@
-import { Props } from "src/Components/Users/UserTypes";
 import { ActionTypes } from "src/redux/actions/action-types";
 import { Action } from "src/redux/actions/index";
 
@@ -26,7 +25,7 @@ const UserReducer = (state: FetchProps = initialState, action: Action) => {
         pageLimit: action.payload.pageLimit + action.payload.data.length,
         didFirstLoad: action.payload.didFirstLoad,
       };
-    case ActionTypes.USERS_LIMIT_REACHED:
+    case ActionTypes.LIMIT_REACHED:
       return {
         ...state,
       };

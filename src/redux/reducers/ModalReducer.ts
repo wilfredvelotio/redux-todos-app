@@ -1,38 +1,22 @@
+import { InitialValuesFormikUser } from "src/Components/MyForms/MyForms";
+import { InitialValuesFormikPost } from "src/Components/MyForms/Posts";
+import { InitialValuesFormikTodos } from "src/Components/MyForms/Todos";
 import { ActionTypes } from "src/redux/actions/action-types";
 import { Action, ActionModal, ActionPost } from "src/redux/actions/index";
+import { resetPost, resetTodo, resetUser } from "src/redux/actions/reset";
 
-interface UserModal {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-  website: string;
-}
-interface PostModal {
-  title: string;
-  body: string;
-}
 export interface ModalInterfaceProps {
   open: boolean;
-  user: UserModal;
-  posts: PostModal;
+  user: InitialValuesFormikUser;
+  posts: InitialValuesFormikPost;
+  todos: InitialValuesFormikTodos;
 }
 
 const initialState: ModalInterfaceProps = {
   open: false,
-  user: {
-    id: 0,
-    name: "",
-    email: "",
-    phone: "",
-    username: "",
-    website: "",
-  },
-  posts: {
-    title: "",
-    body: "",
-  },
+  user: resetUser,
+  posts: resetPost,
+  todos: resetTodo,
 };
 
 const ModalReducer = (state: ModalInterfaceProps = initialState, action: ActionModal) => {
@@ -43,6 +27,7 @@ const ModalReducer = (state: ModalInterfaceProps = initialState, action: ActionM
         open: action.payload.open,
         posts: { ...action.payload.posts },
         user: { ...action.payload.user },
+        todos: { ...action.payload.todos },
       };
     case ActionTypes.MODAL_CLOSE:
       return {

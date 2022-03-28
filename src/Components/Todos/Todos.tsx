@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Props } from "src/Components/Users/UserTypes";
-import { FetchAxios } from "src/Components/Posts/FetchGeneric";
-import { HeaderWrapper, DisplayWrapperTodos } from "src/Components/Reusable/Wrapper";
+import { Link, RouteComponentProps } from "react-router-dom";
+import { getAxios } from "src/Components/Reusable/AxiosAllMethods";
+import { HeaderWrapper, DisplayWrapper } from "src/Components/Reusable/Wrapper";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodos } from "src/redux/actions/action-creator";
 import { ReduxState } from "src/redux/reducers";
 import { FetchTodos } from "src/redux/reducers/TodosReducer";
-import { Loader } from "src/Components/Users/Users";
+import { Loader } from "src/Components/Reusable/Wrapper";
 import { useFetchUserName } from "src/Components/Reusable/useFetchUserName";
+import TodosForm from "src/Components/MyForms/Todos";
 
-const Todos: React.FC = () => {
-  const { uid } = useParams();
+type TypeParam = { uid: string };
+const Todos: React.FC<RouteComponentProps<TypeParam>> = ({ match }) => {
+  const uid = match.params.uid;
   const username = useFetchUserName(uid);
   const { ref, inView } = useInView({ threshold: 0.9, triggerOnce: true });
   const dispatch = useDispatch();
   const todos: FetchTodos = useSelector((state: ReduxState) => state.todos);
-  const url = `https://jsonplaceholder.typicode.com/users/${uid}/todos?_start=${todos.pageStart}&_limit=${todos.pageLimit}`;
+  const url = `users/${uid}/todos?_start=${todos.pageStart}&_limit=${todos.pageLimit}`;
 
   useEffect(() => {
     if (inView || !todos.didFirstLoad) {
@@ -27,8 +28,9 @@ const Todos: React.FC = () => {
 
   return (
     <>
+      <TodosForm />
       <HeaderWrapper username={username} uid={uid}>
-        <DisplayWrapperTodos data={todos.data} myref={ref} />
+        <DisplayWrapper data={todos.data} myref={ref} />
       </HeaderWrapper>
       <Loader myView={inView} />
     </>
