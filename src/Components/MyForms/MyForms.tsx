@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReduxState } from "src/redux/reducers";
 import { modalClose, updateUsers } from "src/redux/actions/action-creator";
 import { YupValidations } from "src/Components/Reusable/RegexFormik";
-import { FormsModalWrapper, paddingStyle } from "src/Components/Reusable/FormsWrapper";
+import { BoxContainer, FormsModalWrapper, paddingStyle } from "src/Components/Reusable/FormsWrapper";
 
 const validateSchema = yup.object({
   name: yup.string().required("First Name required"),
@@ -76,10 +76,7 @@ export const UserForm: React.FC = React.memo(() => {
       >
         {({ handleSubmit, values, handleChange, touched, errors }) => (
           <form onSubmit={handleSubmit}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Button variant="outlined">Edit User</Button>
-              </Box>
+            <BoxContainer name="User">
               <TextField
                 id="name"
                 name="name"
@@ -130,10 +127,7 @@ export const UserForm: React.FC = React.memo(() => {
                 error={touched.website && Boolean(errors.website)}
                 helperText={touched.website && errors.website}
               />
-              <Button type="submit" variant="contained">
-                Submit
-              </Button>
-            </Box>
+            </BoxContainer>
           </form>
         )}
       </Formik>

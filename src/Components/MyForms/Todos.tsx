@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReduxState } from "src/redux/reducers";
 import { modalClose, updatePosts, updateTodos } from "src/redux/actions/action-creator";
 import { YupValidations } from "src/Components/Reusable/RegexFormik";
-import FormsModalWrapper, { paddingStyle } from "src/Components/Reusable/FormsWrapper";
+import FormsModalWrapper, { BoxContainer, paddingStyle } from "src/Components/Reusable/FormsWrapper";
 
 const validateSchema = yup.object({
   title: yup.string().required("Title required"),
@@ -52,10 +52,7 @@ export const MyForms: React.FC = React.memo(() => {
       >
         {({ handleSubmit, values, handleChange, touched, errors }) => (
           <form onSubmit={handleSubmit}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Button variant="outlined">Edit User</Button>
-              </Box>
+            <BoxContainer name="Todo">
               <TextField
                 id="title"
                 name="title"
@@ -71,11 +68,7 @@ export const MyForms: React.FC = React.memo(() => {
                 <Field type="checkbox" id="completed" name="completed" sx={paddingStyle} />
                 {`${values.completed}`}
               </label>
-
-              <Button type="submit" variant="contained">
-                Submit
-              </Button>
-            </Box>
+            </BoxContainer>
           </form>
         )}
       </Formik>
