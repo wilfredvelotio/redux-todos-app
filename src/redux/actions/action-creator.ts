@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { Action, ActionModal, ActionPost, ActionTodo } from "./index";
 import axios from "axios";
 import { InitialValuesFormikUser } from "src/Components/MyForms/MyForms";
-import { getAxios } from "src/Components/Reusable/AxiosAllMethods";
+import { getAxios, putAxios } from "src/Components/Reusable/AxiosAllMethods";
 import { resetPost, resetTodo, resetUser } from "./reset";
 import { InitialValuesFormikPost } from "src/Components/MyForms/Posts";
 import { InitialValuesFormikTodos } from "src/Components/MyForms/Todos";
@@ -28,8 +28,9 @@ export const fetchUsers = (url: string, pageStart: number, pageLimit: number) =>
   };
 };
 
-export const updateUsers = (data: InitialValuesFormikUser) => {
+export const updateUsers = (udata: InitialValuesFormikUser) => {
   return async (dispatch: Dispatch<Action>) => {
+    const data = await putAxios<Props>(`users/${udata.id}`, udata);
     dispatch({
       type: ActionTypes.UPDATE_USERS,
       payload: data,
@@ -58,8 +59,9 @@ export const fetchPosts = (url: string, pageStart: number, pageLimit: number) =>
   };
 };
 
-export const updatePosts = (data: InitialValuesFormikPost) => {
+export const updatePosts = (udata: InitialValuesFormikPost) => {
   return async (dispatch: Dispatch<ActionPost>) => {
+    const data = await putAxios<MyPostProps>(`posts/${udata.id}`, udata);
     dispatch({
       type: ActionTypes.UPDATE_POSTS,
       payload: data,
@@ -87,8 +89,9 @@ export const fetchTodos = (url: string, pageStart: number, pageLimit: number) =>
   };
 };
 
-export const updateTodos = (data: InitialValuesFormikTodos) => {
+export const updateTodos = (udata: InitialValuesFormikTodos) => {
   return async (dispatch: Dispatch<ActionTodo>) => {
+    const data = await putAxios<MyTodosProps>(`todos/${udata.id}`, udata);
     dispatch({
       type: ActionTypes.UPDATE_TODOS,
       payload: data,

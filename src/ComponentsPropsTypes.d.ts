@@ -20,21 +20,21 @@ declare interface Props {
   name: string;
   username: string;
   email: string;
-  address: UserAddress;
+  address?: UserAddress;
   phone: string;
   website: string;
-  company: UserCompany;
+  company?: UserCompany;
 }
 
 declare interface MyPostProps {
-  userId: number;
+  userId?: number;
   id: number;
   title: string;
   body: string;
 }
 
 declare interface MyTodosProps {
-  userId: number;
+  userId?: number;
   id: string;
   title: string;
   completed: boolean;

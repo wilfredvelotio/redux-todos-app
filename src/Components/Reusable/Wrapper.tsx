@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, CircularProgress, Container, Grid, List, Typography } from "@mui/material";
+import { AppBar, Box, Button, CircularProgress, Container, Grid, List, SxProps, Typography } from "@mui/material";
 import React, { Children } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -6,6 +6,7 @@ import { modalOpenPost, modalOpenTodo } from "src/redux/actions/action-creator";
 import Item from "@mui/material/ListItem";
 import { SVGWrapper } from "src/Components/Reusable/SVGWrapper";
 import { modalOpen } from "src/redux/actions/action-creator";
+import { Theme } from "@mui/system";
 
 interface HeaderWrapperProps {
   uid: string;
@@ -140,6 +141,14 @@ interface GridProps {
   users: Props[];
 }
 
+const gridHeader: SxProps<Theme> = {
+  display: "flex",
+  pt: 6,
+  m: 0,
+  mx: "auto",
+  maxWidth: "md",
+};
+
 export const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, users }) => {
   const dispatch = useDispatch();
 
@@ -148,7 +157,7 @@ export const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, u
   };
 
   return (
-    <Container sx={{ display: "flex", pt: 6, m: 0, mx: "auto", maxWidth: "md" }}>
+    <Container sx={gridHeader}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {users?.map((user, index) => {
           return (

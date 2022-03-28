@@ -48,42 +48,53 @@ export const MyForms: React.FC = React.memo(() => {
     handleClose();
   }, []);
   return (
-    <FormsModalWrapper isOpen={modal.open} handleClose={handleClose}>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validateSchema}
-        onSubmit={handleSubmitFormik}
-        enableReinitialize={true}
-      >
-        {({ handleSubmit, values, handleChange, touched, errors }) => (
-          <form onSubmit={handleSubmit}>
-            <BoxContainer name="Post">
-              <TextField
-                id="title"
-                name="title"
-                label="Title"
-                value={values.title}
-                sx={paddingStyle}
-                onChange={handleChange}
-                error={touched.title && Boolean(errors.title)}
-                helperText={touched.title && errors.title}
-              />
-              <TextField
-                id="body"
-                name="body"
-                label="Body"
-                multiline
-                value={values.body}
-                sx={paddingStyle}
-                onChange={handleChange}
-                error={touched.body && Boolean(errors.body)}
-                helperText={touched.body && errors.body}
-              />
-            </BoxContainer>
-          </form>
-        )}
-      </Formik>
-    </FormsModalWrapper>
+    <FormsModalWrapper
+      isOpen={modal.open}
+      handleClose={handleClose}
+      renderProps={() => (
+        <>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validateSchema}
+            onSubmit={handleSubmitFormik}
+            enableReinitialize={true}
+          >
+            {({ handleSubmit, values, handleChange, touched, errors }) => (
+              <form onSubmit={handleSubmit}>
+                <BoxContainer
+                  name="Post"
+                  renderProps={() => (
+                    <>
+                      <TextField
+                        id="title"
+                        name="title"
+                        label="Title"
+                        value={values.title}
+                        sx={paddingStyle}
+                        onChange={handleChange}
+                        error={touched.title && Boolean(errors.title)}
+                        helperText={touched.title && errors.title}
+                      />
+                      <TextField
+                        id="body"
+                        name="body"
+                        label="Body"
+                        multiline
+                        value={values.body}
+                        sx={paddingStyle}
+                        onChange={handleChange}
+                        error={touched.body && Boolean(errors.body)}
+                        helperText={touched.body && errors.body}
+                      />
+                    </>
+                  )}
+                ></BoxContainer>
+              </form>
+            )}
+          </Formik>
+        </>
+      )}
+    ></FormsModalWrapper>
   );
 });
 

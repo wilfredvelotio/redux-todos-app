@@ -67,71 +67,82 @@ export const UserForm: React.FC = React.memo(() => {
   }, []);
 
   return (
-    <FormsModalWrapper isOpen={modal.open} handleClose={handleClose}>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validateSchema}
-        onSubmit={handleSubmitFormik}
-        enableReinitialize={true}
-      >
-        {({ handleSubmit, values, handleChange, touched, errors }) => (
-          <form onSubmit={handleSubmit}>
-            <BoxContainer name="User">
-              <TextField
-                id="name"
-                name="name"
-                label="First Name"
-                value={values.name}
-                sx={paddingStyle}
-                onChange={handleChange}
-                error={touched.name && Boolean(errors.name)}
-                helperText={touched.name && errors.name}
-              />
-              <TextField
-                id="username"
-                name="username"
-                label="User Name"
-                value={values.username}
-                sx={paddingStyle}
-                onChange={handleChange}
-                error={touched.username && Boolean(errors.username)}
-                helperText={touched.username && errors.username}
-              />
-              <TextField
-                id="email"
-                name="email"
-                label="Email Address"
-                sx={paddingStyle}
-                value={values.email}
-                onChange={handleChange}
-                error={touched.email && Boolean(errors.email)}
-                helperText={touched.email && errors.email}
-              />
-              <TextField
-                id="phone"
-                name="phone"
-                label="Phone Number"
-                sx={paddingStyle}
-                value={values.phone}
-                onChange={handleChange}
-                error={touched.phone && Boolean(errors.phone)}
-                helperText={touched.phone && errors.phone}
-              />
-              <TextField
-                id="website"
-                name="website"
-                label="Website"
-                sx={paddingStyle}
-                value={values.website}
-                onChange={handleChange}
-                error={touched.website && Boolean(errors.website)}
-                helperText={touched.website && errors.website}
-              />
-            </BoxContainer>
-          </form>
-        )}
-      </Formik>
-    </FormsModalWrapper>
+    <FormsModalWrapper
+      isOpen={modal.open}
+      handleClose={handleClose}
+      renderProps={() => (
+        <>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validateSchema}
+            onSubmit={handleSubmitFormik}
+            enableReinitialize={true}
+          >
+            {({ handleSubmit, values, handleChange, touched, errors }) => (
+              <form onSubmit={handleSubmit}>
+                <BoxContainer
+                  name="User"
+                  renderProps={() => (
+                    <>
+                      <TextField
+                        id="name"
+                        name="name"
+                        label="First Name"
+                        value={values.name}
+                        sx={paddingStyle}
+                        onChange={handleChange}
+                        error={touched.name && Boolean(errors.name)}
+                        helperText={touched.name && errors.name}
+                      />
+                      <TextField
+                        id="username"
+                        name="username"
+                        label="User Name"
+                        value={values.username}
+                        sx={paddingStyle}
+                        onChange={handleChange}
+                        error={touched.username && Boolean(errors.username)}
+                        helperText={touched.username && errors.username}
+                      />
+                      <TextField
+                        id="email"
+                        name="email"
+                        label="Email Address"
+                        sx={paddingStyle}
+                        value={values.email}
+                        onChange={handleChange}
+                        error={touched.email && Boolean(errors.email)}
+                        helperText={touched.email && errors.email}
+                      />
+                      <TextField
+                        id="phone"
+                        name="phone"
+                        label="Phone Number"
+                        sx={paddingStyle}
+                        value={values.phone}
+                        onChange={handleChange}
+                        error={touched.phone && Boolean(errors.phone)}
+                        helperText={touched.phone && errors.phone}
+                      />
+                      <TextField
+                        id="website"
+                        name="website"
+                        label="Website"
+                        sx={paddingStyle}
+                        value={values.website}
+                        onChange={handleChange}
+                        error={touched.website && Boolean(errors.website)}
+                        helperText={touched.website && errors.website}
+                      />
+                    </>
+                  )}
+                ></BoxContainer>
+              </form>
+            )}
+          </Formik>
+        </>
+      )}
+    ></FormsModalWrapper>
   );
 });
 
