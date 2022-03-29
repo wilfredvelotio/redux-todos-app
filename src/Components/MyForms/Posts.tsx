@@ -10,17 +10,18 @@ import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { ReduxState } from "src/redux/reducers";
 import { modalClose, updatePosts } from "src/redux/actions/action-creator";
-import { YupValidations } from "src/Components/Reusable/RegexFormik";
-import FormsModalWrapper, { BoxContainer, paddingStyle } from "src/Components/Reusable/FormsWrapper";
+import { YupValidations } from "src/Components/Reusable/Components/RegexFormik";
+import FormsModalWrapper, { BoxContainer } from "src/Components/Reusable/Components/FormsWrapper";
+import { paddingStyle } from "../Reusable/Components/Styles";
 
 const validateSchema = yup.object({
   title: yup.string().required("Title required"),
   body: yup
     .string()
-    .required("Body required")
     .min(6, "Must be at least 6 characters")
     .max(40, "Must be less than 40 characters")
-    .matches(new RegExp(YupValidations.VALIDATE_ONLY_ALPHABETS), "No Special Characters"),
+    .matches(new RegExp(YupValidations.VALIDATE_ONLY_ALPHABETS), "No Special Characters")
+    .required("Body required"),
 });
 
 export interface InitialValuesFormikPost {
@@ -84,7 +85,7 @@ export const MyForms: React.FC = React.memo(() => {
                         sx={paddingStyle}
                         onChange={handleChange}
                         error={touched.body && Boolean(errors.body)}
-                        helperText={touched.body && errors.body}
+                        helperText={(touched.body && errors.body) || "Current Length: " + values.body.length}
                       />
                     </>
                   )}

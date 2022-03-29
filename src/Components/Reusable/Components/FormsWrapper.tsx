@@ -2,23 +2,8 @@ import React, { useCallback } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { Button, SxProps, Theme } from "@mui/material";
+import { paddingStyle, style } from "./Styles";
 
-const style: SxProps<Theme> = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  minHeight: 300,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-export const paddingStyle: React.CSSProperties = {
-  padding: "15px",
-};
 interface FormsModalWrapperProps {
   isOpen: boolean;
   handleClose: () => void;

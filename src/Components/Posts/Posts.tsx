@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, Route, RouteComponentProps } from "react-router-dom";
 import { Box, Button } from "@mui/material";
-import { getAxios } from "src/Components/Reusable/AxiosAllMethods";
-import { HeaderWrapper, DisplayWrapper } from "src/Components/Reusable/Wrapper";
+import { getAxios } from "src/Components/Reusable/Network/AxiosAllMethods";
+import { HeaderWrapper, DisplayWrapper } from "src/Components/Reusable/Components/Wrapper";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "src/redux/actions/action-creator";
 import { ReduxState } from "src/redux/reducers";
 import { FetchPosts } from "src/redux/reducers/PostsReducer";
 import PostsForm from "src/Components/MyForms/Posts";
-import { Loader } from "src/Components/Reusable/Wrapper";
-import { useFetchUserName } from "src/Components/Reusable/useFetchUserName";
+import { Loader } from "src/Components/Reusable/Components/Wrapper";
+import { useFetchUserName } from "src/Components/Reusable/Network/useFetchUserName";
 
 type TypeParam = { uid: string };
 

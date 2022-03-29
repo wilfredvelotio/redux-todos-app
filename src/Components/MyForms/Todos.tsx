@@ -10,8 +10,9 @@ import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { ReduxState } from "src/redux/reducers";
 import { modalClose, updatePosts, updateTodos } from "src/redux/actions/action-creator";
-import { YupValidations } from "src/Components/Reusable/RegexFormik";
-import FormsModalWrapper, { BoxContainer, paddingStyle } from "src/Components/Reusable/FormsWrapper";
+import { YupValidations } from "src/Components/Reusable/Components/RegexFormik";
+import FormsModalWrapper, { BoxContainer } from "src/Components/Reusable/Components/FormsWrapper";
+import { paddingStyle } from "../Reusable/Components/Styles";
 
 const validateSchema = yup.object({
   title: yup.string().required("Title required"),

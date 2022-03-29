@@ -28,5 +28,4 @@
   "include": [
     "src"
   ],
-  "types":["ComponentsPropsTypes"]
 }

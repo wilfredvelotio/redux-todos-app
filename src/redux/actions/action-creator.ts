@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { Action, ActionModal, ActionPost, ActionTodo } from "./index";
 import axios from "axios";
 import { InitialValuesFormikUser } from "src/Components/MyForms/MyForms";
-import { getAxios, putAxios } from "src/Components/Reusable/AxiosAllMethods";
+import { getAxios, putAxios } from "src/Components/Reusable/Network/AxiosAllMethods";
 import { resetPost, resetTodo, resetUser } from "./reset";
 import { InitialValuesFormikPost } from "src/Components/MyForms/Posts";
 import { InitialValuesFormikTodos } from "src/Components/MyForms/Todos";

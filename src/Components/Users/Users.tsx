@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 import { FetchProps } from "src/redux/reducers/UserReducer";
 import { fetchUsers, modalOpen } from "src/redux/actions/action-creator";
 import MyForms from "src/Components/MyForms/MyForms";
-import { CenteredAppBar, GridContainer, Loader } from "src/Components/Reusable/Wrapper";
+import { CenteredAppBar, GridContainer, Loader } from "src/Components/Reusable/Components/Wrapper";
 
 const User: React.FC = () => {
   const { ref, inView } = useInView({ threshold: 0.9, triggerOnce: true });
