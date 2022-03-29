@@ -102,3 +102,8 @@ export const centerComponentMargin: React.CSSProperties = {
 export const df: React.CSSProperties = {
   display: "flex",
 };
+
+export const df_flex_center_min_h: React.CSSProperties = {
+  ...displayFlexCenter,
+  minHeight: "100px",
+};

@@ -15,6 +15,7 @@ import {
   centerComponentMargin,
   centerImage,
   df,
+  df_flex_center_min_h,
   displayFlexCenter,
   displayFlexSpaceEvenly,
   gridContainerAlignCenter,
@@ -195,5 +196,15 @@ export const CenteredAppBar: React.FC<{ name: string }> = ({ name }) => {
 };
 
 export const Loader: React.FC<{ myView: boolean }> = React.memo(({ myView }) => {
-  return <>{!myView ? <CircularProgress sx={{ display: "flex", mx: "auto" }} /> : <Box sx={{ minWidth: 10 }} />}</>;
+  return (
+    <>
+      {!myView ? (
+        <Box sx={df_flex_center_min_h}>
+          <CircularProgress />{" "}
+        </Box>
+      ) : (
+        <Box sx={df_flex_center_min_h} />
+      )}
+    </>
+  );
 });
