@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useFormik, FastField, Formik } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -48,54 +48,51 @@ export const MyForms: React.FC = React.memo(() => {
     handleSubmit(values);
     handleClose();
   }, []);
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: validateSchema,
+    enableReinitialize: true,
+    onSubmit: handleSubmitFormik,
+  });
   return (
     <FormsModalWrapper
       isOpen={modal.open}
       handleClose={handleClose}
       renderProps={() => (
-        <>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validateSchema}
-            onSubmit={handleSubmitFormik}
-            enableReinitialize={true}
-          >
-            {({ handleSubmit, values, handleChange, touched, errors }) => (
-              <form onSubmit={handleSubmit}>
-                <BoxContainer
-                  name="Post"
-                  renderProps={() => (
-                    <>
-                      <TextField
-                        id="title"
-                        name="title"
-                        label="Title"
-                        value={values.title}
-                        sx={paddingStyle}
-                        onChange={handleChange}
-                        error={touched.title && Boolean(errors.title)}
-                        helperText={touched.title && errors.title}
-                      />
-                      <TextField
-                        id="body"
-                        name="body"
-                        label="Body"
-                        multiline
-                        value={values.body}
-                        sx={paddingStyle}
-                        onChange={handleChange}
-                        error={touched.body && Boolean(errors.body)}
-                        helperText={(touched.body && errors.body) || "Current Length: " + values.body.length}
-                      />
-                    </>
-                  )}
-                ></BoxContainer>
-              </form>
+        <form onSubmit={formik.handleSubmit}>
+          <BoxContainer
+            name="Post"
+            renderProps={() => (
+              <>
+                <TextField
+                  id="title"
+                  name="title"
+                  label="Title"
+                  value={formik.values.title}
+                  sx={paddingStyle}
+                  onChange={formik.handleChange}
+                  error={formik.touched.title && Boolean(formik.errors.title)}
+                  helperText={formik.touched.title && formik.errors.title}
+                />
+                <TextField
+                  id="body"
+                  name="body"
+                  label="Body"
+                  multiline
+                  value={formik.values.body}
+                  sx={paddingStyle}
+                  onChange={formik.handleChange}
+                  error={formik.touched.body && Boolean(formik.errors.body)}
+                  helperText={
+                    (formik.touched.body && formik.errors.body) || "Current Length: " + formik.values.body.length
+                  }
+                />
+              </>
             )}
-          </Formik>
-        </>
+          ></BoxContainer>
+        </form>
       )}
-    ></FormsModalWrapper>
+    />
   );
 });
 

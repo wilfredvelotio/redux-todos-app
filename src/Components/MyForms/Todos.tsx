@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useFormik, FastField, Formik, Field } from "formik";
+import { Field, useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -43,48 +43,52 @@ export const MyForms: React.FC = React.memo(() => {
     handleSubmit(values);
     handleClose();
   }, []);
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: validateSchema,
+    enableReinitialize: true,
+    onSubmit: handleSubmitFormik,
+  });
+
   return (
     <FormsModalWrapper
       isOpen={modal.open}
       handleClose={handleClose}
       renderProps={() => (
-        <>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validateSchema}
-            onSubmit={handleSubmitFormik}
-            enableReinitialize={true}
-          >
-            {({ handleSubmit, values, handleChange, touched, errors }) => (
-              <form onSubmit={handleSubmit}>
-                <BoxContainer
-                  name="Todo"
-                  renderProps={() => (
-                    <>
-                      <TextField
-                        id="title"
-                        name="title"
-                        label="Title"
-                        value={values.title}
-                        sx={paddingStyle}
-                        onChange={handleChange}
-                        error={touched.title && Boolean(errors.title)}
-                        helperText={touched.title && errors.title}
-                      />
-                      <label>
-                        <FormLabel>Completed</FormLabel>
-                        <Field type="checkbox" id="completed" name="completed" sx={paddingStyle} />
-                        {`${values.completed}`}
-                      </label>
-                    </>
-                  )}
-                ></BoxContainer>
-              </form>
+        <form onSubmit={formik.handleSubmit}>
+          <BoxContainer
+            name="Todo"
+            renderProps={() => (
+              <>
+                <TextField
+                  id="title"
+                  name="title"
+                  label="Title"
+                  value={formik.values.title}
+                  sx={paddingStyle}
+                  onChange={formik.handleChange}
+                  error={formik.touched.title && Boolean(formik.errors.title)}
+                  helperText={formik.touched.title && formik.errors.title}
+                />
+                <label style={paddingStyle}>
+                  <FormLabel>Completed</FormLabel>
+                  <input
+                    type="checkbox"
+                    id="completed"
+                    name="completed"
+                    style={paddingStyle}
+                    onChange={formik.handleChange}
+                    value="Completed"
+                  />
+                  {`${formik.values.completed}`}
+                </label>
+              </>
             )}
-          </Formik>
-        </>
+          ></BoxContainer>
+        </form>
       )}
-    ></FormsModalWrapper>
+    />
   );
 });
 
