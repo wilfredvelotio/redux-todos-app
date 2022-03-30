@@ -7,9 +7,9 @@ import { resetPost, resetTodo, resetUser } from "src/redux/actions/reset";
 
 export interface ModalInterfaceProps {
   open: boolean;
-  user: InitialValuesFormikUser;
-  posts: InitialValuesFormikPost;
-  todos: InitialValuesFormikTodos;
+  user?: InitialValuesFormikUser;
+  posts?: InitialValuesFormikPost;
+  todos?: InitialValuesFormikTodos;
 }
 
 const initialState: ModalInterfaceProps = {
@@ -24,10 +24,7 @@ const ModalReducer = (state: ModalInterfaceProps = initialState, action: ActionM
     case ActionTypes.MODAL_OPEN:
       return {
         ...state,
-        open: action.payload.open,
-        posts: { ...action.payload.posts },
-        user: { ...action.payload.user },
-        todos: { ...action.payload.todos },
+        ...action.payload,
       };
     case ActionTypes.MODAL_CLOSE:
       return {

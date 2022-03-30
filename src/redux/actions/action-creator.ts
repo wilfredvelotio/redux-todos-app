@@ -7,6 +7,7 @@ import { getAxios, putAxios } from "src/Components/Reusable/Network/AxiosAllMeth
 import { resetPost, resetTodo, resetUser } from "./reset";
 import { InitialValuesFormikPost } from "src/Components/MyForms/Posts";
 import { InitialValuesFormikTodos } from "src/Components/MyForms/Todos";
+import { isTodo, isUser } from "src/utils/helper";
 
 export const fetchUsers = (url: string, pageStart: number, pageLimit: number) => {
   return async (dispatch: Dispatch<Action>) => {
@@ -62,6 +63,7 @@ export const fetchPosts = (url: string, pageStart: number, pageLimit: number) =>
 export const updatePosts = (udata: InitialValuesFormikPost) => {
   return async (dispatch: Dispatch<ActionPost>) => {
     const data = await putAxios<MyPostProps>(`posts/${udata.id}`, udata);
+    console.log(`posts/${udata.id}`, udata, data);
     dispatch({
       type: ActionTypes.UPDATE_POSTS,
       payload: data,
@@ -92,6 +94,7 @@ export const fetchTodos = (url: string, pageStart: number, pageLimit: number) =>
 export const updateTodos = (udata: InitialValuesFormikTodos) => {
   return async (dispatch: Dispatch<ActionTodo>) => {
     const data = await putAxios<MyTodosProps>(`todos/${udata.id}`, udata);
+    console.log(`posts/${udata.id}`, udata, data);
     dispatch({
       type: ActionTypes.UPDATE_TODOS,
       payload: data,
@@ -99,46 +102,37 @@ export const updateTodos = (udata: InitialValuesFormikTodos) => {
   };
 };
 
-export const modalOpen = (user: Props) => {
-  return (dispatch: Dispatch<ActionModal>) => {
-    dispatch({
-      type: ActionTypes.MODAL_OPEN,
-      payload: {
-        open: true,
-        user: user,
-        posts: resetPost,
-        todos: resetTodo,
-      },
-    });
-  };
-};
-
-export const modalOpenPost = (post: MyPostProps) => {
-  return (dispatch: Dispatch<ActionModal>) => {
-    dispatch({
-      type: ActionTypes.MODAL_OPEN,
-      payload: {
-        open: true,
-        user: resetUser,
-        posts: post,
-        todos: resetTodo,
-      },
-    });
-  };
-};
-
-export const modalOpenTodo = (post: MyTodosProps) => {
-  return (dispatch: Dispatch<ActionModal>) => {
-    dispatch({
-      type: ActionTypes.MODAL_OPEN,
-      payload: {
-        open: true,
-        user: resetUser,
-        posts: resetPost,
-        todos: post,
-      },
-    });
-  };
+export const modalOpen = (data: UserTodoPost) => {
+  if (isUser(data))
+    return (dispatch: Dispatch<ActionModal>) => {
+      dispatch({
+        type: ActionTypes.MODAL_OPEN,
+        payload: {
+          open: true,
+          user: { ...data },
+        },
+      });
+    };
+  else if (isTodo(data))
+    return (dispatch: Dispatch<ActionModal>) => {
+      dispatch({
+        type: ActionTypes.MODAL_OPEN,
+        payload: {
+          open: true,
+          todos: { ...data },
+        },
+      });
+    };
+  else
+    return (dispatch: Dispatch<ActionModal>) => {
+      dispatch({
+        type: ActionTypes.MODAL_OPEN,
+        payload: {
+          open: true,
+          posts: { ...data },
+        },
+      });
+    };
 };
 
 export const modalClose = () => {

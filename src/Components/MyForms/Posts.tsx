@@ -13,6 +13,7 @@ import { modalClose, updatePosts } from "src/redux/actions/action-creator";
 import { YupValidations } from "src/Components/Reusable/Components/RegexFormik";
 import FormsModalWrapper, { BoxContainer } from "src/Components/Reusable/Components/FormsWrapper";
 import { paddingStyle } from "../Reusable/Components/Styles";
+import { resetPost } from "src/redux/actions/reset";
 
 const validateSchema = yup.object({
   title: yup.string().required("Title required"),
@@ -32,11 +33,7 @@ export interface InitialValuesFormikPost {
 export const MyForms: React.FC = React.memo(() => {
   const modal = useSelector((state: ReduxState) => state.modal);
   const dispatch = useDispatch();
-  const initialValues: InitialValuesFormikPost = {
-    id: modal.posts.id,
-    title: modal.posts.title,
-    body: modal.posts.body,
-  };
+  const initialValues: InitialValuesFormikPost = modal.posts ? { ...modal.posts } : { ...resetPost };
 
   const handleClose = () => {
     dispatch(modalClose());

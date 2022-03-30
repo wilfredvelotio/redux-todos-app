@@ -20,10 +20,7 @@ const TodosReducer = (state: FetchTodos = initialState, action: ActionTodo) => {
     case ActionTypes.FETCH_TODOS:
       return {
         ...state,
-        data: [...state.data, ...action.payload.data],
-        pageStart: action.payload.pageStart + action.payload.data.length,
-        pageLimit: action.payload.pageLimit + action.payload.data.length,
-        didFirstLoad: action.payload.didFirstLoad,
+        ...action.payload,
       };
     case ActionTypes.UPDATE_TODOS:
       const todosData = [...state.data];

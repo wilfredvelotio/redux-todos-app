@@ -2,7 +2,6 @@ import { AppBar, Box, Button, CircularProgress, Container, Grid, List, SxProps, 
 import React, { Children } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { modalOpenPost, modalOpenTodo } from "src/redux/actions/action-creator";
 import Item from "@mui/material/ListItem";
 import { SVGWrapper } from "src/Components/Reusable/Components/SVGWrapper";
 import { modalOpen } from "src/redux/actions/action-creator";
@@ -25,6 +24,7 @@ import {
   monteSerrat,
   noTextStyleAlignLeft,
 } from "./Styles";
+import { isTodo } from "src/utils/helper";
 
 interface HeaderWrapperProps {
   uid: string;
@@ -82,10 +82,10 @@ export const HeaderWrapper: React.FC<HeaderWrapperProps> = ({ uid, username, chi
 export const DisplayWrapper: React.FC<DisplayWrapperProps> = ({ data, myref }) => {
   const dispatch = useDispatch();
   const handleMenu = (post: MyPostProps | MyTodosProps) => {
-    if ("completed" in post) {
-      dispatch(modalOpenTodo(post));
+    if (isTodo(post)) {
+      dispatch(modalOpen(post));
     } else {
-      dispatch(modalOpenPost(post));
+      dispatch(modalOpen(post));
     }
   };
 
@@ -105,7 +105,7 @@ export const DisplayWrapper: React.FC<DisplayWrapperProps> = ({ data, myref }) =
 };
 
 export const WhichDisplayWrapper: React.FC<WhichDisplayWrapperProps> = ({ post, handleMenu }) => {
-  if ("completed" in post) return <TodosDisplayData post={post} handleMenu={handleMenu} />;
+  if (isTodo(post)) return <TodosDisplayData post={post} handleMenu={handleMenu} />;
   else
     return (
       <>
@@ -161,7 +161,6 @@ export const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, u
                 <Box sx={gridContainerCenter} onClick={() => handleMenu(user)}>
                   <SVGWrapper />
                 </Box>
-
                 <Link to={`/posts/${user.id}`}>
                   <div style={gridContainerAlignCenter}>
                     <div style={cardHeight}>
@@ -200,7 +199,7 @@ export const Loader: React.FC<{ myView: boolean }> = React.memo(({ myView }) => 
     <>
       {!myView ? (
         <Box sx={df_flex_center_min_h}>
-          <CircularProgress />{" "}
+          <CircularProgress />
         </Box>
       ) : (
         <Box sx={df_flex_center_min_h} />

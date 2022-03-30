@@ -13,6 +13,7 @@ import { modalClose, updatePosts, updateTodos } from "src/redux/actions/action-c
 import { YupValidations } from "src/Components/Reusable/Components/RegexFormik";
 import FormsModalWrapper, { BoxContainer } from "src/Components/Reusable/Components/FormsWrapper";
 import { paddingStyle } from "../Reusable/Components/Styles";
+import { resetTodo } from "src/redux/actions/reset";
 
 const validateSchema = yup.object({
   title: yup.string().required("Title required"),
@@ -27,12 +28,7 @@ export interface InitialValuesFormikTodos {
 export const MyForms: React.FC = React.memo(() => {
   const modal = useSelector((state: ReduxState) => state.modal);
   const dispatch = useDispatch();
-  const initialValues: InitialValuesFormikTodos = {
-    id: modal.todos.id,
-    title: modal.todos.title,
-    completed: modal.todos.completed,
-  };
-
+  const initialValues: InitialValuesFormikTodos = modal.todos ? { ...modal.todos } : { ...resetTodo };
   const handleClose = () => {
     dispatch(modalClose());
   };
@@ -79,6 +75,7 @@ export const MyForms: React.FC = React.memo(() => {
                     name="completed"
                     style={paddingStyle}
                     onChange={formik.handleChange}
+                    checked={formik.values.completed}
                     value="Completed"
                   />
                   {`${formik.values.completed}`}

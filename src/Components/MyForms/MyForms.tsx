@@ -13,6 +13,7 @@ import { modalClose, updateUsers } from "src/redux/actions/action-creator";
 import { YupValidations } from "src/Components/Reusable/Components/RegexFormik";
 import { BoxContainer, FormsModalWrapper } from "src/Components/Reusable/Components/FormsWrapper";
 import { paddingStyle } from "src/Components/Reusable/Components/Styles";
+import { resetUser } from "src/redux/actions/reset";
 
 const validateSchema = yup.object({
   name: yup.string().required("First Name required"),
@@ -45,16 +46,8 @@ export interface InitialValuesFormikUser {
 
 export const UserForm: React.FC = React.memo(() => {
   const modal = useSelector((state: ReduxState) => state.modal);
-  const initialValues: InitialValuesFormikUser = {
-    id: modal.user.id,
-    name: modal.user.name,
-    username: modal.user.username,
-    email: modal.user.email,
-    phone: modal.user.phone,
-    website: modal.user.website,
-  };
+  const initialValues: InitialValuesFormikUser = modal.user ? { ...modal.user } : { ...resetUser };
   const dispatch = useDispatch();
-
   const handleClose = () => {
     dispatch(modalClose());
   };

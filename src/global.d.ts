@@ -39,3 +39,5 @@ declare interface MyTodosProps {
   title: string;
   completed: boolean;
 }
+declare type TodoOrPost = MyPostProps | MyTodosProps;
+declare type UserTodoPost = TodoOrPost | Props;
