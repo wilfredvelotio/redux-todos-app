@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./App.css";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 
