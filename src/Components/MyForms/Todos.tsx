@@ -16,7 +16,7 @@ import { paddingStyle } from "../Reusable/Components/Styles";
 import { resetTodo } from "src/redux/actions/reset";
 
 const validateSchema = yup.object({
-  title: yup.string().required("Title required"),
+  title: yup.string().matches(new RegExp(YupValidations.VALIDATE_ALPHABETS_SPACES), "").required("Title required"),
   completed: yup.boolean(),
 });
 

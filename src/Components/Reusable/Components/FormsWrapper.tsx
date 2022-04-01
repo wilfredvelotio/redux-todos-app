@@ -19,7 +19,7 @@ export const FormsModalWrapper: React.FC<FormsModalWrapperProps> = ({ isOpen, ha
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
-        <Box sx={style}>
+        <Box data-test="form-display" sx={style}>
           <Box sx={{ display: "flex", flexDirection: "column", maxWidth: "400px", margin: "100px auto" }}>
             {renderProps()}
           </Box>
@@ -36,7 +36,7 @@ export const BoxContainer: React.FC<{ name: string; renderProps: () => JSX.Eleme
         Edit {name}
       </Button>
       {renderProps()}
-      <Button type="submit" variant="contained">
+      <Button type="submit" variant="contained" id="submit-form-button">
         Submit
       </Button>
     </Box>

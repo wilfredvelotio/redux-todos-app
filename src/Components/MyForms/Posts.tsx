@@ -21,7 +21,7 @@ const validateSchema = yup.object({
     .string()
     .min(6, "Must be at least 6 characters")
     .max(40, "Must be less than 40 characters")
-    .matches(new RegExp(YupValidations.VALIDATE_ONLY_ALPHABETS), "No Special Characters")
+    .matches(new RegExp(YupValidations.VALIDATE_ALPHABETS_SPACES), "No Special Characters")
     .required("Body required"),
 });
 

@@ -14,25 +14,30 @@ import { YupValidations } from "src/Components/Reusable/Components/RegexFormik";
 import { BoxContainer, FormsModalWrapper } from "src/Components/Reusable/Components/FormsWrapper";
 import { paddingStyle } from "src/Components/Reusable/Components/Styles";
 import { resetUser } from "src/redux/actions/reset";
-
+const Note = "Note";
 const validateSchema = yup.object({
-  name: yup.string().required("First Name required"),
+  name: yup
+    .string()
+    .required(`${Note} :Name required`)
+    .min(6, `${Note} : Must be at least 6 characters`)
+    .max(20, `${Note} : Must be at least 18 characters`)
+    .matches(new RegExp(YupValidations.VALIDATE_ALPHABETS_SPACES), "Note: No Special Characters"),
   username: yup
     .string()
-    .required("User Name required")
-    .min(6, "Must be at least 6 characters")
-    .max(20, "Must be less than 18 characters")
-    .matches(new RegExp(YupValidations.VALIDATE_ONLY_ALPHABETS), "No Special Characters"),
-  email: yup.string().email("Enter Valid Email").required("Email required"),
+    .required("Note: User Name required")
+    .min(6, "Note: Must be at least 6 characters")
+    .max(20, "Note: Must be less than 18 characters")
+    .matches(new RegExp(YupValidations.VALIDATE_ALPHABETS_AND_NUMBERS), "Note: No Special Characters"),
+  email: yup.string().email("Note: Enter Valid Email").required("Email required"),
   phone: yup
     .string()
     .required("This field is Required")
-    .matches(new RegExp(YupValidations.VALIDATE_PHONE), "Phone number is not valid")
-    .required("Phone required"),
+    .matches(new RegExp(YupValidations.VALIDATE_PHONE), "Note: Phone number is not valid")
+    .required("Note: Phone required"),
   website: yup
     .string()
-    .matches(new RegExp(YupValidations.VALIDATE_WEBSITE), "Enter correct url!")
-    .required("Please enter website"),
+    .matches(new RegExp(YupValidations.VALIDATE_WEBSITE), "Note: Enter correct url!")
+    .required("Note: Please enter website"),
 });
 
 export interface InitialValuesFormikUser {

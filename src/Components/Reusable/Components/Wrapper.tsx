@@ -105,13 +105,11 @@ export const DisplayWrapper: React.FC<DisplayWrapperProps> = ({ data, myref }) =
 };
 
 export const WhichDisplayWrapper: React.FC<WhichDisplayWrapperProps> = ({ post, handleMenu }) => {
-  if (isTodo(post)) return <TodosDisplayData post={post} handleMenu={handleMenu} />;
-  else
-    return (
-      <>
-        <PostDisplayData post={post} handleMenu={handleMenu} />
-      </>
-    );
+  return isTodo(post) ? (
+    <TodosDisplayData post={post} handleMenu={handleMenu} />
+  ) : (
+    <PostDisplayData post={post} handleMenu={handleMenu} />
+  );
 };
 
 export const PostDisplayData: React.FC<PostsDisplayDataProps> = ({ post, handleMenu }) => {
@@ -156,13 +154,13 @@ export const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, u
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {users?.map((user, index) => {
           return (
-            <Grid ref={myref} item xs={2} sm={4} md={4} key={index}>
+            <Grid data-test="user-card" ref={myref} item xs={2} sm={4} md={4} key={index}>
               <Box sx={boxShadow}>
-                <Box sx={gridContainerCenter} onClick={() => handleMenu(user)}>
+                <Box data-test="form-user" sx={gridContainerCenter} onClick={() => handleMenu(user)}>
                   <SVGWrapper />
                 </Box>
                 <Link to={`/posts/${user.id}`}>
-                  <div style={gridContainerAlignCenter}>
+                  <div data-test="post-route" style={gridContainerAlignCenter}>
                     <div style={cardHeight}>
                       <img src={`https://picsum.photos/500/300?random=${index}`} style={centerImage} />
                     </div>
@@ -184,7 +182,7 @@ export const GridContainer: React.FC<GridProps> = React.memo(({ inView, myref, u
 
 export const CenteredAppBar: React.FC<{ name: string }> = ({ name }) => {
   return (
-    <Box sx={appHeaderBody}>
+    <Box sx={appHeaderBody} data-test="app-header">
       <AppBar sx={appBarBackgroundCenter}>
         <Box sx={displayFlexCenter}>
           <div>{name}</div>
