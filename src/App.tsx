@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
-function App() {
+const Users = React.lazy(() => import("./Components/Users/Users"));
+const Posts = React.lazy(() => import("./Components/Posts/Posts"));
+const Todos = React.lazy(() => import("./Components/Todos/Todos"));
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Switch>
+          <React.Suspense fallback={<CircularProgress />}>
+            <Route exact path="/" component={Users} />
+            <Route path="/posts/:uid" component={Posts} />
+            <Route path="/todos/:uid" component={Todos} />
+          </React.Suspense>
+        </Switch>
+      </Router>
+    </>
   );
-}
+};
 
 export default App;

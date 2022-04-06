@@ -1,0 +1,13 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "projectId": "djdsjdjs",
+  "integrationFolder": "cypress/tests",
+  "viewportHeight": 1000,
+  "viewportWidth": 1280,
+  "retries": {
+    "runMode": 2,
+    "openMode": 1
+  },
+  "ignoreTestFiles":"*.d.ts",
+  "experimentalStudio": true
+}
